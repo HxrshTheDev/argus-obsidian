@@ -1,130 +1,151 @@
-# ARGUS OBSIDIAN - Landing Page
+ARGUS Obsidian 🔐
 
-A modern, privacy-focused landing page for ARGUS OBSIDIAN - "The Digital Sentinel" for AI data protection.
+The Invisible Layer Between Your Data and AI
 
-## Project Structure
+---
 
-```
-ARGUS/
-├── index.html              # Main HTML file
-├── css/
-│   └── style.css          # Custom styles and animations
-├── js/
-│   └── main.js            # Interactive functionality
-├── config/
-│   └── tailwind.config.js  # Tailwind CSS configuration
-└── README.md              # This file
-```
+🚀 Overview
 
-## Features
+ARGUS Obsidian is a privacy-first AI interface designed to protect sensitive user data before it is processed by AI models.
 
-- **Modern Design**: Glassmorphism effects, gradient backgrounds, and smooth animations
-- **Dark Theme**: OLED-optimized dark theme with cyberpunk aesthetic
-- **Responsive**: Fully responsive design for mobile, tablet, and desktop
-- **Interactive Demo**: Live data detection and masking demo in the demo section
-- **Accessibility**: Semantic HTML, focus indicators, and smooth scrolling
-- **Performance**: Optimized for fast loading with minimal dependencies
+As AI tools become a daily utility, users unknowingly expose personal and confidential information such as emails, phone numbers, and internal documents. ARGUS solves this by acting as a protective layer that ensures safe interaction with AI systems.
 
-## Technologies Used
+---
 
-- **HTML5**: Semantic markup
-- **Tailwind CSS**: Utility-first CSS framework (via CDN)
-- **Vanilla JavaScript**: Interactive features, no dependencies
-- **Google Fonts**: Manrope, Inter, and Space Grotesk typefaces
-- **Material Symbols**: Icon library from Google
+🧠 Problem
 
-## Getting Started
+Most users:
 
-### Option 1: Open in Browser
-Simply open `index.html` in your browser. All dependencies are loaded from CDN.
+- Paste sensitive data into AI tools without awareness
+- Have little understanding of data privacy risks
+- Rely on platforms that may store or process their inputs
 
-### Option 2: Local Development Server
-```bash
-# Using Python 3
-python -m http.server 8000
+This creates a serious gap between AI convenience and data security.
 
-# Using Node.js
-npx http-server
-```
+---
 
-Then visit `http://localhost:8000` in your browser.
+💡 Solution
 
-## File Breakdown
+ARGUS introduces an automated privacy pipeline:
 
-### index.html
-- Clean, semantic HTML structure
-- Divided into logical sections with IDs for navigation
-- All interactive elements have IDs for JavaScript targeting
-- Links to external CSS and JS files
+Input → Detect → Mask → Process → Restore
 
-### css/style.css
-- Custom styles for glass-card effect
-- Glow effects for primary colors
-- Hero gradient background
-- Scrollbar styling
-- Responsive design utilities
-- Animation keyframes
+- Detects sensitive data in real time
+- Replaces it with secure placeholders
+- Sends only anonymized data to AI
+- Restores original information in the final output
 
-### js/main.js
-- Real-time sensitive data detection
-- Demo interaction handling
-- Smooth scroll navigation
-- Risk level calculation
-- Mock pattern matching for PII/sensitive data
+This ensures zero direct exposure of sensitive data to AI systems.
 
-### config/tailwind.config.js
-- Extended color palette for ARGUS Obsidian branding
-- Custom font families (headline, body, label)
-- Border radius customization
-- Dark mode configuration
+---
 
-## Sections
+⚙️ How It Works
 
-1. **Navigation Bar**: Fixed header with logo and navigation links
-2. **Hero Section**: Large headline with CTA buttons
-3. **Features Section**: Three-column feature grid (Detect, Mask, Restore)
-4. **Demo Section**: Interactive demo showing data protection features
-5. **Trust & Future Section**: Key metrics and value propositions
-6. **CTA Section**: Final call-to-action
-7. **Footer**: Links and copyright information
+1. Input
+   User provides text (email, document, message)
 
-## Customization
+2. Detection Engine
+   Identifies sensitive data:
+   
+   - Emails
+   - Phone numbers
 
-### Colors
-Edit the Tailwind config in `config/tailwind.config.js` to change the color scheme.
+3. Masking Engine
+   Converts:
+   
+   test@gmail.com → [EMAIL_1]
 
-### Typography
-Font families are defined in the Tailwind config. Update Google Fonts link in `index.html` to change fonts.
+4. AI Processing
+   Masked input is sent to AI safely
 
-### Content
-Edit the text content directly in `index.html`. All section content is well-commented.
+5. Restoration Engine
+   
+   [EMAIL_1] → test@gmail.com
 
-### Interactive Features
-Modify the sensitive data patterns in `js/main.js` to detect different types of information.
+6. Output
+   User receives improved content with original data restored
 
-## Browser Support
+---
 
-- Chrome/Edge 90+
-- Firefox 88+
-- Safari 14+
-- Mobile browsers (iOS Safari, Chrome Mobile)
+✨ Features
 
-## Performance Notes
+- 🔍 Real-time sensitive data detection
+- 🛡️ Automatic masking & restoration
+- 📊 Privacy risk indicator (Low / Medium / High)
+- ⚡ Clean, modern, and intuitive UI
+- 🔐 No permanent data storage
 
-- All Tailwind CSS is loaded via CDN (~50KB)
-- Custom CSS is minimal (~2KB)
-- JavaScript is lightweight vanilla (~5KB)
-- Total page weight: ~60KB (excluding images)
+---
 
-## Future Enhancements
+🖥️ Tech Stack
 
-- Add actual backend API integration
-- Implement real data masking algorithms
-- Add user authentication
-- Create admin dashboard
-- Add analytics tracking
-- Implement PWA features
+- Frontend: HTML, CSS, JavaScript
+- Backend: Node.js (Express) (in progress)
+- AI Integration: OpenAI / Gemini (planned)
 
-## License
+---
 
-© 2026 ARGUS OBSIDIAN. THE DIGITAL SENTINEL.
+🧪 Example
+
+Input:
+
+My email is test@gmail.com
+
+Masked:
+
+My email is [EMAIL_1]
+
+Output:
+
+Dear Sir/Madam, my email is test@gmail.com. I would like to...
+
+---
+
+📊 Current Status
+
+- ✅ UI completed (ARGUS Obsidian interface)
+- ✅ Core masking logic implemented
+- 🚧 Backend & AI integration in progress
+
+---
+
+🎯 Target Users
+
+- Students using AI for resumes and assignments
+- Freelancers handling client communication
+- Small businesses managing customer data
+- Everyday users interacting with AI tools
+
+---
+
+🔮 Vision
+
+To become the default privacy layer for AI interaction, enabling safe, secure, and seamless use of AI across:
+
+- Web applications
+- Browser extensions
+- Developer APIs
+- Enterprise systems
+
+---
+
+🤝 Contributors
+
+- Harsh Gosavi
+- Team ARGUS
+
+---
+
+⚠️ Privacy Commitment
+
+ARGUS does not store user data.
+All processing is temporary and designed with privacy as the top priority.
+
+---
+
+⭐ Why ARGUS Matters
+
+«If AI is going to see everything,
+we must decide what it is allowed to see.»
+
+---
