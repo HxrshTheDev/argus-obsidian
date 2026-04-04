@@ -1,5 +1,80 @@
 // ARGUS OBSIDIAN - Main JavaScript
 
+// ============================================
+// Background Paths - Floating SVG Animation
+// ============================================
+
+function generateFloatingPaths(containerId, position) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'w-full h-full');
+    svg.setAttribute('viewBox', '0 0 696 316');
+    svg.setAttribute('fill', 'none');
+    svg.style.color = 'white';
+
+    const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+    title.textContent = 'Background Paths';
+    svg.appendChild(title);
+
+    for (let i = 0; i < 36; i++) {
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        const d = `M-${380 - i * 5 * position} -${189 + i * 6}C-${
+            380 - i * 5 * position
+        } -${189 + i * 6} -${312 - i * 5 * position} ${216 - i * 6} ${
+            152 - i * 5 * position
+        } ${343 - i * 6}C${616 - i * 5 * position} ${470 - i * 6} ${
+            684 - i * 5 * position
+        } ${875 - i * 6} ${684 - i * 5 * position} ${875 - i * 6}`;
+
+        path.setAttribute('d', d);
+        path.setAttribute('stroke', 'currentColor');
+        path.setAttribute('stroke-width', String(0.5 + i * 0.03));
+        path.setAttribute('stroke-opacity', String(0.1 + i * 0.03));
+        path.setAttribute('fill', 'none');
+        path.setAttribute('class', 'floating-path');
+
+        // Randomized duration matching framer-motion: 20 + Math.random() * 10
+        const duration = 20 + Math.random() * 10;
+        // Negative delay so paths start at different phases
+        const delay = Math.random() * -30;
+        path.style.animation = `floatingPath ${duration}s linear ${delay}s infinite`;
+
+        svg.appendChild(path);
+    }
+
+    container.appendChild(svg);
+}
+
+// ============================================
+// Hero Title - Letter-by-Letter Reveal
+// ============================================
+
+function animateHeroTitle() {
+    const titleEl = document.getElementById('hero-title');
+    if (!titleEl) return;
+
+    const text = titleEl.textContent.trim();
+    titleEl.innerHTML = '';
+
+    const words = text.split(/\s+/);
+    words.forEach((word, wordIndex) => {
+        const wordSpan = document.createElement('span');
+        wordSpan.className = 'hero-word';
+
+        word.split('').forEach((letter, letterIndex) => {
+            const letterSpan = document.createElement('span');
+            letterSpan.className = 'hero-letter';
+            // Staggered delay matching framer-motion: wordIndex * 0.1 + letterIndex * 0.03
+            letterSpan.style.animationDelay = `${wordIndex * 0.1 + letterIndex * 0.03}s`;
+            letterSpan.textContent = letter;
+            wordSpan.appendChild(letterSpan);
+        });
+
+        titleEl.appendChild(wordSpan);
+    });
+}
 // Mock sensitive data patterns
 const SENSITIVE_PATTERNS = {
   email: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g,
@@ -11,6 +86,11 @@ const SENSITIVE_PATTERNS = {
 
 // Initialize DOM elements
 document.addEventListener('DOMContentLoaded', () => {
+  // Initialize Background Paths animation
+  generateFloatingPaths('paths-pos1', 1);
+  generateFloatingPaths('paths-neg1', -1);
+  animateHeroTitle();
+
   const inputBuffer = document.getElementById('inputBuffer');
   const secureBtn = document.getElementById('secureBtn');
   const detectionCount = document.getElementById('detectionCount');
@@ -219,10 +299,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Get Started buttons event handler
   document.querySelectorAll('button').forEach(btn => {
-    if (btn.textContent.includes('Get Started') || btn.textContent.includes('Start Securing')) {
+    if (btn.textContent.includes('Get Started') || btn.textContent.includes('Start Securing') || btn.textContent.includes('See How It Works')) {
       btn.addEventListener('click', () => {
-        console.log('Get Started clicked');
-        // Add your CTA logic here
+        const demoSection = document.getElementById('demo');
+        if (demoSection) {
+          demoSection.scrollIntoView({ behavior: 'smooth' });
+        }
       });
     }
   });

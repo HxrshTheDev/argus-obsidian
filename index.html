@@ -38,27 +38,34 @@
     <main>
         <!-- Section 1: Hero -->
         <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden hero-gradient px-6 pt-20">
+            <!-- Background Paths SVG Animation -->
+            <div class="absolute inset-0 pointer-events-none" id="paths-pos1"></div>
+            <div class="absolute inset-0 pointer-events-none" id="paths-neg1"></div>
+
             <div class="absolute inset-0 pointer-events-none overflow-hidden">
                 <div class="absolute top-1/4 -left-20 w-96 h-96 bg-primary/10 blur-[120px] rounded-full"></div>
                 <div class="absolute bottom-1/4 -right-20 w-96 h-96 bg-secondary/10 blur-[120px] rounded-full"></div>
             </div>
             <div class="relative z-10 text-center max-w-5xl">
-                <h1 class="font-headline font-extrabold text-6xl md:text-8xl lg:text-9xl tracking-tighter mb-6 leading-none">
+                <h1 id="hero-title" class="font-headline font-extrabold text-6xl md:text-8xl lg:text-9xl tracking-tighter mb-6 leading-none">
                     ARGUS OBSIDIAN
                 </h1>
-                <p class="font-body text-xl md:text-2xl text-white/80 mb-4 max-w-3xl mx-auto">
+                <p class="font-body text-xl md:text-2xl text-white/80 mb-4 max-w-3xl mx-auto hero-fade-in" style="animation-delay: 0.6s;">
                     The invisible layer between your data and AI.
                 </p>
-                <p class="font-label text-sm md:text-base text-white/40 uppercase tracking-[0.3em] mb-12">
+                <p class="font-label text-sm md:text-base text-white/40 uppercase tracking-[0.3em] mb-12 hero-fade-in" style="animation-delay: 0.8s;">
                     Prevent data exposure. Stay private. Stay in control.
                 </p>
-                <div class="flex flex-col md:flex-row gap-6 justify-center items-center">
+                <div class="flex flex-col md:flex-row gap-6 justify-center items-center hero-fade-in" style="animation-delay: 1s;">
                     <button class="bg-primary text-on-primary-container px-10 py-5 rounded-full font-headline font-bold text-lg glow-primary-strong transition-all hover:scale-105 active:scale-95">
                         Start Securing
                     </button>
-                    <button class="glass-card px-10 py-5 rounded-full font-headline font-bold text-lg text-white hover:bg-white/10 transition-all">
-                        See How It Works
-                    </button>
+                    <div class="inline-block group relative bg-gradient-to-b from-white/10 to-black/10 p-px rounded-2xl backdrop-blur-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <button class="rounded-[1.15rem] px-8 py-5 text-lg font-semibold backdrop-blur-md bg-black/95 hover:bg-black/100 text-white transition-all duration-300 group-hover:-translate-y-0.5 border border-white/10 hover:shadow-md hover:shadow-neutral-800/50 font-headline">
+                            <span class="opacity-90 group-hover:opacity-100 transition-opacity">See How It Works</span>
+                            <span class="ml-3 opacity-70 group-hover:opacity-100 group-hover:translate-x-1.5 transition-all duration-300 inline-block">→</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
