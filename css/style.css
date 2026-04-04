@@ -1,0 +1,118 @@
+/* ============================================
+   ARGUS OBSIDIAN - Global Styles
+   ============================================ */
+
+body {
+    background-color: #0e0e0e;
+    color: #ffffff;
+}
+
+/* ============================================
+   Glass Morphism Effect
+   ============================================ */
+
+.glass-card {
+    background: rgba(14, 14, 14, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 0.5px solid rgba(73, 72, 71, 0.2);
+}
+
+/* ============================================
+   Glow Effects
+   ============================================ */
+
+.glow-primary {
+    box-shadow: 0 0 30px rgba(153, 247, 255, 0.15);
+}
+
+.glow-primary-strong {
+    box-shadow: 0 0 40px rgba(153, 247, 255, 0.3);
+}
+
+/* ============================================
+   Hero Section Gradient
+   ============================================ */
+
+.hero-gradient {
+    background: radial-gradient(
+        circle at 50% 50%,
+        rgba(153, 247, 255, 0.05) 0%,
+        rgba(172, 137, 255, 0.03) 30%,
+        rgba(14, 14, 14, 1) 70%
+    );
+}
+
+/* ============================================
+   Smooth Scrolling
+   ============================================ */
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* ============================================
+   Interactive Elements
+   ============================================ */
+
+button {
+    cursor: pointer;
+}
+
+button:focus-visible {
+    outline: 2px solid #99f7ff;
+    outline-offset: 2px;
+}
+
+textarea:focus {
+    outline: 2px solid #99f7ff;
+    outline-offset: 2px;
+}
+
+/* ============================================
+   Animations
+   ============================================ */
+
+@keyframes pulse-glow {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* ============================================
+   Responsive Typography
+   ============================================ */
+
+@media (max-width: 768px) {
+    .glass-card {
+        border-radius: 16px;
+    }
+}
+
+/* ============================================
+   Scrollbar Styling
+   ============================================ */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(153, 247, 255, 0.2);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(153, 247, 255, 0.4);
+}
