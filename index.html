@@ -1,35 +1,45 @@
 <!DOCTYPE html>
 <html class="dark" lang="en">
+
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>ARGUS OBSIDIAN | The Digital Sentinel</title>
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    
+
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500&family=Space+Grotesk:wght@300;400;500&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+
     <!-- Tailwind Configuration -->
     <script src="./config/tailwind.config.js"></script>
-    
+
     <!-- Custom Styles -->
-    <link rel="stylesheet" href="./css/style.css"/>
+    <link rel="stylesheet" href="./css/style.css" />
 </head>
+
 <body class="font-body selection:bg-primary selection:text-on-primary">
     <!-- Top Navigation Shell -->
     <nav class="fixed top-0 w-full z-50 bg-[#0e0e0e]/60 backdrop-blur-[20px] border-b border-white/10">
         <div class="flex justify-between items-center px-8 py-4 max-w-screen-2xl mx-auto">
             <div class="text-xl tracking-widest font-bold text-white font-headline">ARGUS OBSIDIAN</div>
             <div class="hidden md:flex items-center gap-10">
-                <a class="text-[#99f7ff] font-medium hover:text-[#99f7ff] transition-all duration-300 font-label text-sm uppercase tracking-wider" href="#features">Features</a>
-                <a class="text-white/70 hover:text-[#99f7ff] transition-all duration-300 font-label text-sm uppercase tracking-wider" href="#demo">Demo</a>
-                <a class="text-white/70 hover:text-[#99f7ff] transition-all duration-300 font-label text-sm uppercase tracking-wider" href="#trust">Trust</a>
-                <a class="text-white/70 hover:text-[#99f7ff] transition-all duration-300 font-label text-sm uppercase tracking-wider" href="#future">Future</a>
+                <a class="text-[#99f7ff] font-medium hover:text-[#99f7ff] transition-all duration-300 font-label text-sm uppercase tracking-wider"
+                    href="#features">Features</a>
+                <a class="text-white/70 hover:text-[#99f7ff] transition-all duration-300 font-label text-sm uppercase tracking-wider"
+                    href="#demo">Demo</a>
+                <a class="text-white/70 hover:text-[#99f7ff] transition-all duration-300 font-label text-sm uppercase tracking-wider"
+                    href="#trust">Trust</a>
+                <a class="text-white/70 hover:text-[#99f7ff] transition-all duration-300 font-label text-sm uppercase tracking-wider"
+                    href="#future">Future</a>
             </div>
-            <button class="scale-95 active:scale-90 transition-transform bg-primary text-on-primary px-6 py-2 rounded-full font-headline font-bold text-sm tracking-tight glow-primary">
+            <button
+                class="scale-95 active:scale-90 transition-transform bg-primary text-on-primary px-6 py-2 rounded-full font-headline font-bold text-sm tracking-tight glow-primary">
                 Get Started
             </button>
         </div>
@@ -37,28 +47,44 @@
 
     <main>
         <!-- Section 1: Hero -->
-        <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden hero-gradient px-6 pt-20">
+        <section id="hero"
+            class="relative min-h-screen flex items-center justify-center overflow-hidden hero-gradient px-6 pt-20">
+            <!-- Background Paths SVG Animation -->
+            <div class="absolute inset-0 pointer-events-none" id="paths-pos1"></div>
+            <div class="absolute inset-0 pointer-events-none" id="paths-neg1"></div>
+
             <div class="absolute inset-0 pointer-events-none overflow-hidden">
                 <div class="absolute top-1/4 -left-20 w-96 h-96 bg-primary/10 blur-[120px] rounded-full"></div>
                 <div class="absolute bottom-1/4 -right-20 w-96 h-96 bg-secondary/10 blur-[120px] rounded-full"></div>
             </div>
             <div class="relative z-10 text-center max-w-5xl">
-                <h1 class="font-headline font-extrabold text-6xl md:text-8xl lg:text-9xl tracking-tighter mb-6 leading-none">
+                <h1 id="hero-title"
+                    class="font-headline font-extrabold text-6xl md:text-8xl lg:text-9xl tracking-tighter mb-6 leading-none">
                     ARGUS OBSIDIAN
                 </h1>
-                <p class="font-body text-xl md:text-2xl text-white/80 mb-4 max-w-3xl mx-auto">
+                <p class="font-body text-xl md:text-2xl text-white/80 mb-4 max-w-3xl mx-auto hero-fade-in"
+                    style="animation-delay: 0.6s;">
                     The invisible layer between your data and AI.
                 </p>
-                <p class="font-label text-sm md:text-base text-white/40 uppercase tracking-[0.3em] mb-12">
+                <p class="font-label text-sm md:text-base text-white/40 uppercase tracking-[0.3em] mb-12 hero-fade-in"
+                    style="animation-delay: 0.8s;">
                     Prevent data exposure. Stay private. Stay in control.
                 </p>
-                <div class="flex flex-col md:flex-row gap-6 justify-center items-center">
-                    <button class="bg-primary text-on-primary-container px-10 py-5 rounded-full font-headline font-bold text-lg glow-primary-strong transition-all hover:scale-105 active:scale-95">
+                <div class="flex flex-col md:flex-row gap-6 justify-center items-center hero-fade-in"
+                    style="animation-delay: 1s;">
+                    <button
+                        class="bg-primary text-on-primary-container px-10 py-5 rounded-full font-headline font-bold text-lg glow-primary-strong transition-all hover:scale-105 active:scale-95">
                         Start Securing
                     </button>
-                    <button class="glass-card px-10 py-5 rounded-full font-headline font-bold text-lg text-white hover:bg-white/10 transition-all">
-                        See How It Works
-                    </button>
+                    <div
+                        class="inline-block group relative bg-gradient-to-b from-white/10 to-black/10 p-px rounded-2xl backdrop-blur-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <button
+                            class="rounded-[1.15rem] px-8 py-5 text-lg font-semibold backdrop-blur-md bg-black/95 hover:bg-black/100 text-white transition-all duration-300 group-hover:-translate-y-0.5 border border-white/10 hover:shadow-md hover:shadow-neutral-800/50 font-headline">
+                            <span class="opacity-90 group-hover:opacity-100 transition-opacity">See How It Works</span>
+                            <span
+                                class="ml-3 opacity-70 group-hover:opacity-100 group-hover:translate-x-1.5 transition-all duration-300 inline-block">→</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -69,33 +95,40 @@
                 <!-- Detect -->
                 <div class="glass-card p-10 rounded-[24px] group hover:border-primary/30 transition-all duration-500">
                     <div class="w-12 h-12 mb-8 text-primary">
-                        <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 0;">radar</span>
+                        <span class="material-symbols-outlined text-4xl"
+                            style="font-variation-settings: 'FILL' 0;">radar</span>
                     </div>
                     <h3 class="font-headline text-2xl font-bold mb-4">Detect</h3>
                     <p class="text-on-surface-variant font-body leading-relaxed">
-                        Real-time heuristic scanning identifies sensitive PII and trade secrets before they ever reach the Large Language Model.
+                        Real-time heuristic scanning identifies sensitive PII and trade secrets before they ever reach
+                        the Large Language Model.
                     </p>
                 </div>
 
                 <!-- Mask -->
                 <div class="glass-card p-10 rounded-[24px] group hover:border-secondary/30 transition-all duration-500">
                     <div class="w-12 h-12 mb-8 text-secondary">
-                        <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 0;">visibility_off</span>
+                        <span class="material-symbols-outlined text-4xl"
+                            style="font-variation-settings: 'FILL' 0;">visibility_off</span>
                     </div>
                     <h3 class="font-headline text-2xl font-bold mb-4">Mask</h3>
                     <p class="text-on-surface-variant font-body leading-relaxed">
-                        Autonomous synthetic data replacement ensures LLM functionality remains intact while keeping your actual values hidden.
+                        Autonomous synthetic data replacement ensures LLM functionality remains intact while keeping
+                        your actual values hidden.
                     </p>
                 </div>
 
                 <!-- Restore -->
-                <div class="glass-card p-10 rounded-[24px] group hover:border-primary-container/30 transition-all duration-500">
+                <div
+                    class="glass-card p-10 rounded-[24px] group hover:border-primary-container/30 transition-all duration-500">
                     <div class="w-12 h-12 mb-8 text-primary-container">
-                        <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 0;">sync_alt</span>
+                        <span class="material-symbols-outlined text-4xl"
+                            style="font-variation-settings: 'FILL' 0;">sync_alt</span>
                     </div>
                     <h3 class="font-headline text-2xl font-bold mb-4">Restore</h3>
                     <p class="text-on-surface-variant font-body leading-relaxed">
-                        Seamless reverse-remapping decodes AI responses back to your local environment with absolute precision.
+                        Seamless reverse-remapping decodes AI responses back to your local environment with absolute
+                        precision.
                     </p>
                 </div>
             </div>
@@ -105,22 +138,28 @@
         <section id="demo" class="py-32 px-6 bg-surface-container-low">
             <div class="max-w-6xl mx-auto">
                 <div class="text-center mb-16">
-                    <span class="font-label text-primary text-xs uppercase tracking-[0.2em] mb-4 block">Live Interface</span>
+                    <span class="font-label text-primary text-xs uppercase tracking-[0.2em] mb-4 block">Live
+                        Interface</span>
                     <h2 class="font-headline text-4xl md:text-5xl font-bold">Obsidian Intercept</h2>
                 </div>
-                <div class="glass-card rounded-[32px] overflow-hidden shadow-2xl flex flex-col md:flex-row h-auto min-h-[600px]">
+                <div
+                    class="glass-card rounded-[32px] overflow-hidden shadow-2xl flex flex-col md:flex-row h-auto min-h-[600px]">
                     <!-- Left: Input -->
                     <div class="flex-1 p-8 border-r border-white/5 flex flex-col">
                         <div class="flex justify-between items-center mb-6">
-                            <span class="font-label text-[10px] text-white/40 uppercase tracking-widest">Input Buffer</span>
+                            <span class="font-label text-[10px] text-white/40 uppercase tracking-widest">Input
+                                Buffer</span>
                             <div class="flex items-center gap-2">
                                 <div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
                                 <span class="font-label text-[10px] text-primary uppercase">ARGUS is analyzing...</span>
                             </div>
                         </div>
-                        <textarea id="inputBuffer" class="flex-1 bg-transparent border-none focus:ring-0 text-white font-body text-lg resize-none placeholder:text-white/20" placeholder="Paste your confidential prompt here..."></textarea>
+                        <textarea id="inputBuffer"
+                            class="flex-1 bg-transparent border-none focus:ring-0 text-white font-body text-lg resize-none placeholder:text-white/20"
+                            placeholder="Paste your confidential prompt here..."></textarea>
                         <div class="mt-8">
-                            <button id="secureBtn" class="w-full bg-primary text-on-primary-container py-4 rounded-xl font-headline font-bold uppercase tracking-widest glow-primary-strong transition-all hover:scale-[1.02] active:scale-95">
+                            <button id="secureBtn"
+                                class="w-full bg-primary text-on-primary-container py-4 rounded-xl font-headline font-bold uppercase tracking-widest glow-primary-strong transition-all hover:scale-[1.02] active:scale-95">
                                 Secure &amp; Improve
                             </button>
                         </div>
@@ -129,20 +168,25 @@
                     <!-- Right: Intelligence Panel -->
                     <div class="w-full md:w-[400px] bg-black/40 p-8 flex flex-col gap-8">
                         <div>
-                            <h4 class="font-label text-[10px] text-white/40 uppercase tracking-widest mb-4">Detection Panel</h4>
+                            <h4 class="font-label text-[10px] text-white/40 uppercase tracking-widest mb-4">Detection
+                                Panel</h4>
                             <div class="flex flex-col gap-3">
-                                <div class="p-4 rounded-xl bg-surface-container-high border border-white/5 flex items-center justify-between">
+                                <div
+                                    class="p-4 rounded-xl bg-surface-container-high border border-white/5 flex items-center justify-between">
                                     <span class="font-body text-sm text-white/60">Sensitive Data Detected</span>
-                                    <span id="detectionCount" class="font-label text-xs text-error font-medium">0 FOUND</span>
+                                    <span id="detectionCount" class="font-label text-xs text-error font-medium">0
+                                        FOUND</span>
                                 </div>
-                                <div id="detectionStatus" class="p-8 rounded-xl border border-dashed border-white/10 flex flex-col items-center justify-center text-center opacity-40">
+                                <div id="detectionStatus"
+                                    class="p-8 rounded-xl border border-dashed border-white/10 flex flex-col items-center justify-center text-center opacity-40">
                                     <span class="material-symbols-outlined mb-2">check_circle</span>
                                     <p class="font-body text-xs">No sensitive data detected</p>
                                 </div>
                             </div>
                         </div>
                         <div>
-                            <h4 class="font-label text-[10px] text-white/40 uppercase tracking-widest mb-4">Privacy Indicator</h4>
+                            <h4 class="font-label text-[10px] text-white/40 uppercase tracking-widest mb-4">Privacy
+                                Indicator</h4>
                             <div class="p-6 rounded-xl bg-surface-container-high border border-white/5">
                                 <div class="flex justify-between items-center mb-3">
                                     <span class="font-headline text-sm font-bold">Privacy Risk</span>
@@ -154,8 +198,10 @@
                             </div>
                         </div>
                         <div class="mt-auto">
-                            <h4 class="font-label text-[10px] text-white/40 uppercase tracking-widest mb-4">Protected Output</h4>
-                            <div id="protectedOutput" class="p-4 rounded-xl bg-surface-container-highest min-h-[100px] border border-primary/20">
+                            <h4 class="font-label text-[10px] text-white/40 uppercase tracking-widest mb-4">Protected
+                                Output</h4>
+                            <div id="protectedOutput"
+                                class="p-4 rounded-xl bg-surface-container-highest min-h-[100px] border border-primary/20">
                                 <p class="font-body text-sm text-white/40 italic">Waiting for processing...</p>
                             </div>
                         </div>
@@ -172,7 +218,8 @@
                         Built for a world where <span class="text-primary">AI sees everything</span>.
                     </h2>
                     <p class="font-body text-xl text-on-surface-variant max-w-lg mb-12">
-                        We don't just secure your data; we architected a new paradigm of intelligence privacy that scales with the evolution of neural networks.
+                        We don't just secure your data; we architected a new paradigm of intelligence privacy that
+                        scales with the evolution of neural networks.
                     </p>
                     <div class="flex items-center gap-8">
                         <div class="text-center">
@@ -182,7 +229,8 @@
                         <div class="w-px h-12 bg-white/10"></div>
                         <div class="text-center">
                             <div class="font-headline text-4xl font-bold text-white mb-1">100%</div>
-                            <div class="font-label text-[10px] text-white/40 uppercase tracking-widest">Client-Side</div>
+                            <div class="font-label text-[10px] text-white/40 uppercase tracking-widest">Client-Side
+                            </div>
                         </div>
                         <div class="w-px h-12 bg-white/10"></div>
                         <div class="text-center">
@@ -194,30 +242,38 @@
 
                 <div id="future" class="lg:w-1/2 grid grid-cols-1 gap-12">
                     <div class="flex gap-6">
-                        <div class="flex-shrink-0 w-12 h-12 rounded-full border border-primary/20 flex items-center justify-center text-primary">
+                        <div
+                            class="flex-shrink-0 w-12 h-12 rounded-full border border-primary/20 flex items-center justify-center text-primary">
                             <span class="material-symbols-outlined">api</span>
                         </div>
                         <div>
                             <h4 class="font-headline text-xl font-bold mb-2">Invisible Integration</h4>
-                            <p class="text-on-surface-variant font-body leading-relaxed">Deploy as a browser extension, a proxy, or an SDK. Your workflow remains untouched while your safety is guaranteed.</p>
+                            <p class="text-on-surface-variant font-body leading-relaxed">Deploy as a browser extension,
+                                a proxy, or an SDK. Your workflow remains untouched while your safety is guaranteed.</p>
                         </div>
                     </div>
                     <div class="flex gap-6">
-                        <div class="flex-shrink-0 w-12 h-12 rounded-full border border-secondary/20 flex items-center justify-center text-secondary">
+                        <div
+                            class="flex-shrink-0 w-12 h-12 rounded-full border border-secondary/20 flex items-center justify-center text-secondary">
                             <span class="material-symbols-outlined">security</span>
                         </div>
                         <div>
                             <h4 class="font-headline text-xl font-bold mb-2">The Sentinel Protocol</h4>
-                            <p class="text-on-surface-variant font-body leading-relaxed">Our proprietary protocol creates a temporary 'shadow' of your data, allowing the AI to learn without ever seeing the core truth.</p>
+                            <p class="text-on-surface-variant font-body leading-relaxed">Our proprietary protocol
+                                creates a temporary 'shadow' of your data, allowing the AI to learn without ever seeing
+                                the core truth.</p>
                         </div>
                     </div>
                     <div class="flex gap-6">
-                        <div class="flex-shrink-0 w-12 h-12 rounded-full border border-primary-container/20 flex items-center justify-center text-primary-container">
+                        <div
+                            class="flex-shrink-0 w-12 h-12 rounded-full border border-primary-container/20 flex items-center justify-center text-primary-container">
                             <span class="material-symbols-outlined">auto_graph</span>
                         </div>
                         <div>
                             <h4 class="font-headline text-xl font-bold mb-2">Future Proof Privacy</h4>
-                            <p class="text-on-surface-variant font-body leading-relaxed">As models become more invasive, ARGUS evolves. Our AI-vs-AI defense layer keeps you two steps ahead of extraction attacks.</p>
+                            <p class="text-on-surface-variant font-body leading-relaxed">As models become more invasive,
+                                ARGUS evolves. Our AI-vs-AI defense layer keeps you two steps ahead of extraction
+                                attacks.</p>
                         </div>
                     </div>
                 </div>
@@ -226,13 +282,18 @@
 
         <!-- Section 5: Final CTA -->
         <section class="relative py-40 px-6 overflow-hidden">
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-primary/5 blur-[150px] rounded-full pointer-events-none"></div>
+            <div
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-primary/5 blur-[150px] rounded-full pointer-events-none">
+            </div>
             <div class="relative z-10 text-center max-w-4xl mx-auto">
                 <h2 class="font-headline text-6xl md:text-8xl font-extrabold tracking-tighter mb-12 leading-none">
-                    Control what <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">AI can see.</span>
+                    Control what <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">AI can
+                        see.</span>
                 </h2>
                 <div class="inline-block p-[1px] rounded-full bg-gradient-to-r from-primary/50 to-secondary/50">
-                    <button class="bg-surface px-12 py-6 rounded-full font-headline font-bold text-2xl hover:bg-transparent hover:text-on-primary transition-all duration-500 glow-primary">
+                    <button
+                        class="bg-surface px-12 py-6 rounded-full font-headline font-bold text-2xl hover:bg-transparent hover:text-on-primary transition-all duration-500 glow-primary">
                         Get Started Now
                     </button>
                 </div>
@@ -245,9 +306,12 @@
         <div class="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto gap-4">
             <div class="text-lg font-bold text-white/50 tracking-widest font-headline uppercase">ARGUS OBSIDIAN</div>
             <div class="flex gap-8">
-                <a class="font-['Space_Grotesk'] text-[10px] tracking-tighter uppercase text-white/40 hover:text-[#99f7ff] transition-colors" href="#">Privacy</a>
-                <a class="font-['Space_Grotesk'] text-[10px] tracking-tighter uppercase text-white/40 hover:text-[#99f7ff] transition-colors" href="#">Terms</a>
-                <a class="font-['Space_Grotesk'] text-[10px] tracking-tighter uppercase text-white/40 hover:text-[#99f7ff] transition-colors" href="#">Security</a>
+                <a class="font-['Space_Grotesk'] text-[10px] tracking-tighter uppercase text-white/40 hover:text-[#99f7ff] transition-colors"
+                    href="#">Privacy</a>
+                <a class="font-['Space_Grotesk'] text-[10px] tracking-tighter uppercase text-white/40 hover:text-[#99f7ff] transition-colors"
+                    href="#">Terms</a>
+                <a class="font-['Space_Grotesk'] text-[10px] tracking-tighter uppercase text-white/40 hover:text-[#99f7ff] transition-colors"
+                    href="#">Security</a>
             </div>
             <div class="font-['Space_Grotesk'] text-[10px] tracking-tighter uppercase text-white/40">
                 © 2026 ARGUS OBSIDIAN. THE DIGITAL SENTINEL.
@@ -258,4 +322,5 @@
     <!-- Scripts -->
     <script src="./js/main.js"></script>
 </body>
+
 </html>

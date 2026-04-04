@@ -1,0 +1,25 @@
+{
+  "name": "argus-obsidian",
+  "version": "1.0.0",
+  "description": "ARGUS Obsidian 🔐",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HxrshTheDev/argus-obsidian.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/HxrshTheDev/argus-obsidian/issues"
+  },
+  "homepage": "https://github.com/HxrshTheDev/argus-obsidian#readme",
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.2",
+    "vite": "^8.0.3"
+  }
+}

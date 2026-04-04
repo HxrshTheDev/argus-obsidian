@@ -1,80 +1,16 @@
 // ARGUS OBSIDIAN - Main JavaScript
 
-// ============================================
-// Background Paths - Floating SVG Animation
-// ============================================
+// Same origin when UI is served by FastAPI; override for split deploy: <script>window.__ARGUS_API_BASE__ = 'https://api.example.com'</script>
+const API_BASE = typeof window !== 'undefined' && window.__ARGUS_API_BASE__ != null
+  ? String(window.__ARGUS_API_BASE__).replace(/\/$/, '')
+  : '';
 
-function generateFloatingPaths(containerId, position) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('class', 'w-full h-full');
-    svg.setAttribute('viewBox', '0 0 696 316');
-    svg.setAttribute('fill', 'none');
-    svg.style.color = 'white';
-
-    const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
-    title.textContent = 'Background Paths';
-    svg.appendChild(title);
-
-    for (let i = 0; i < 36; i++) {
-        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        const d = `M-${380 - i * 5 * position} -${189 + i * 6}C-${
-            380 - i * 5 * position
-        } -${189 + i * 6} -${312 - i * 5 * position} ${216 - i * 6} ${
-            152 - i * 5 * position
-        } ${343 - i * 6}C${616 - i * 5 * position} ${470 - i * 6} ${
-            684 - i * 5 * position
-        } ${875 - i * 6} ${684 - i * 5 * position} ${875 - i * 6}`;
-
-        path.setAttribute('d', d);
-        path.setAttribute('stroke', 'currentColor');
-        path.setAttribute('stroke-width', String(0.5 + i * 0.03));
-        path.setAttribute('stroke-opacity', String(0.1 + i * 0.03));
-        path.setAttribute('fill', 'none');
-        path.setAttribute('class', 'floating-path');
-
-        // Randomized duration matching framer-motion: 20 + Math.random() * 10
-        const duration = 20 + Math.random() * 10;
-        // Negative delay so paths start at different phases
-        const delay = Math.random() * -30;
-        path.style.animation = `floatingPath ${duration}s linear ${delay}s infinite`;
-
-        svg.appendChild(path);
-    }
-
-    container.appendChild(svg);
+function escapeHtml(s) {
+  const div = document.createElement('div');
+  div.textContent = s;
+  return div.innerHTML;
 }
 
-// ============================================
-// Hero Title - Letter-by-Letter Reveal
-// ============================================
-
-function animateHeroTitle() {
-    const titleEl = document.getElementById('hero-title');
-    if (!titleEl) return;
-
-    const text = titleEl.textContent.trim();
-    titleEl.innerHTML = '';
-
-    const words = text.split(/\s+/);
-    words.forEach((word, wordIndex) => {
-        const wordSpan = document.createElement('span');
-        wordSpan.className = 'hero-word';
-
-        word.split('').forEach((letter, letterIndex) => {
-            const letterSpan = document.createElement('span');
-            letterSpan.className = 'hero-letter';
-            // Staggered delay matching framer-motion: wordIndex * 0.1 + letterIndex * 0.03
-            letterSpan.style.animationDelay = `${wordIndex * 0.1 + letterIndex * 0.03}s`;
-            letterSpan.textContent = letter;
-            wordSpan.appendChild(letterSpan);
-        });
-
-        titleEl.appendChild(wordSpan);
-    });
-}
 // Mock sensitive data patterns
 const SENSITIVE_PATTERNS = {
   email: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g,
@@ -86,11 +22,6 @@ const SENSITIVE_PATTERNS = {
 
 // Initialize DOM elements
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize Background Paths animation
-  generateFloatingPaths('paths-pos1', 1);
-  generateFloatingPaths('paths-neg1', -1);
-  animateHeroTitle();
-
   const inputBuffer = document.getElementById('inputBuffer');
   const secureBtn = document.getElementById('secureBtn');
   const detectionCount = document.getElementById('detectionCount');
@@ -125,45 +56,72 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /**
-   * Analyze input and generate protected output
+   * Client-only mask (fallback when API unreachable)
    */
-  function analyzeAndSecure() {
+  function maskClientSide(text) {
+    const findings = detectSensitiveData(text);
+    let maskedText = text;
+    findings.forEach(finding => {
+      maskedText = maskedText.replace(
+        new RegExp(escapeRegex(finding.value), 'g'),
+        `[${finding.type.toUpperCase()}]`
+      );
+    });
+    return maskedText;
+  }
+
+  function renderProtectedOutput(maskedText, restoredText, noteHtml) {
+    const safeMasked = escapeHtml(maskedText);
+    let body = `<p class="font-body text-sm text-white/80"><strong>Masked output:</strong><br/><code class="text-white/60 break-words">${safeMasked}</code></p>`;
+    if (restoredText) {
+      body += `<p class="font-body text-sm text-white/80 mt-3"><strong>Restored (after AI):</strong><br/><code class="text-primary/90 break-words">${escapeHtml(restoredText)}</code></p>`;
+    }
+    if (noteHtml) {
+      body += noteHtml;
+    }
+    protectedOutput.innerHTML = body;
+  }
+
+  /**
+   * Analyze input and generate protected output (Python API when available)
+   */
+  async function analyzeAndSecure() {
     const text = inputBuffer.value;
-    
+
     if (!text.trim()) {
       alert('Please enter some text to secure');
       return;
     }
 
-    // Disable button during processing
     secureBtn.disabled = true;
     secureBtn.textContent = 'Processing...';
 
-    // Simulate processing delay
-    setTimeout(() => {
-      const findings = detectSensitiveData(text);
-      let maskedText = text;
-
-      // Replace sensitive data with placeholders
-      findings.forEach(finding => {
-        maskedText = maskedText.replace(
-          new RegExp(escapeRegex(finding.value), 'g'),
-          `[${finding.type.toUpperCase()}]`
-        );
+    try {
+      const res = await fetch(`${API_BASE}/api/process`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text })
       });
 
-      // Update protected output
-      protectedOutput.innerHTML = `
-        <p class="font-body text-sm text-white/80">
-          <strong>Masked Output:</strong><br/>
-          <code class="text-white/60 break-words">${maskedText}</code>
-        </p>
-      `;
+      if (!res.ok) {
+        throw new Error(await res.text());
+      }
 
-      // Re-enable button
-      secureBtn.disabled = false;
-      secureBtn.textContent = 'Secure & Improve';
-    }, 800);
+      const data = await res.json();
+      let note = '';
+      if (data.llm_error) {
+        note = `<p class="font-body text-xs text-yellow-400/90 mt-3">${escapeHtml(data.llm_error)}</p>`;
+      }
+      renderProtectedOutput(data.masked_text, data.restored_text, note);
+    } catch (err) {
+      console.warn('ARGUS API unavailable, using client-side mask only', err);
+      const maskedText = maskClientSide(text);
+      const hint = `<p class="font-body text-xs text-white/40 mt-3">Run the Python server from <code class="text-white/50">server/</code> and open the app via <code class="text-white/50">http://127.0.0.1:8000</code> for full pipeline.</p>`;
+      renderProtectedOutput(maskedText, null, hint);
+    }
+
+    secureBtn.disabled = false;
+    secureBtn.textContent = 'Secure & Improve';
   }
 
   /**
@@ -299,12 +257,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Get Started buttons event handler
   document.querySelectorAll('button').forEach(btn => {
-    if (btn.textContent.includes('Get Started') || btn.textContent.includes('Start Securing') || btn.textContent.includes('See How It Works')) {
+    if (btn.textContent.includes('Get Started') || btn.textContent.includes('Start Securing')) {
       btn.addEventListener('click', () => {
-        const demoSection = document.getElementById('demo');
-        if (demoSection) {
-          demoSection.scrollIntoView({ behavior: 'smooth' });
-        }
+        console.log('Get Started clicked');
+        // Add your CTA logic here
       });
     }
   });
