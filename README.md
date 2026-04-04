@@ -132,6 +132,7 @@ To become the default privacy layer for AI interaction, enabling safe, secure, a
 🤝 Contributors
 
 - Harsh Gosavi
+- Aman Rane
 - Team ARGUS
 
 ---
