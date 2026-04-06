@@ -125,16 +125,16 @@ document.addEventListener('DOMContentLoaded', () => {
       // Update UI panels with professional states
       const updateUI = (state) => {
           if (state === 'analyzing') {
-              statusBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse mr-2"></span>ANALYZING';
+              statusBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse mr-2"></span>SECURITY_SCAN_ACTIVE';
               statusBadge.className = "flex items-center px-3 py-1 rounded-full bg-yellow-400/10 text-yellow-400 text-[10px] font-bold tracking-widest";
           } else if (state === 'complete') {
-              statusBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>SECURE';
+              statusBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>STREAM_SECURE';
               statusBadge.className = "flex items-center px-3 py-1 rounded-full bg-cyan-400/10 text-cyan-400 text-[10px] font-bold tracking-widest";
           }
       };
 
       document.getElementById("detectionPanel").innerText =
-        `${total} sensitive items detected`;
+        `${total} PII leaks identified`;
 
       // Risk bar logic
       const riskBar = document.getElementById("riskBar");
@@ -143,32 +143,35 @@ document.addEventListener('DOMContentLoaded', () => {
       if (total === 0) {
         riskBar.style.width = "15%";
         riskBar.style.background = "#22c55e";
-        if (riskLabel) riskLabel.innerText = "LOW RISK";
+        if (riskLabel) riskLabel.innerText = "NO_THREAT_DETECTED";
       } else if (total === 1) {
         riskBar.style.width = "45%";
         riskBar.style.background = "#facc15";
-        if (riskLabel) riskLabel.innerText = "MEDIUM RISK";
+        if (riskLabel) riskLabel.innerText = "ELEVATED_PRIVACY_RISK";
       } else {
         riskBar.style.width = "85%";
         riskBar.style.background = "#ef4444";
-        if (riskLabel) riskLabel.innerText = "HIGH RISK";
+        if (riskLabel) riskLabel.innerText = "CRITICAL_DATA_EXPOSURE";
       }
 
       const output = document.getElementById("finalOutput");
       const maskedOutput = document.getElementById("maskedOutput");
 
-      // Professional Simulation Sequence
+      // Professional Intercept Sequence
       updateUI('analyzing');
-      maskedOutput.innerHTML = '<span class="animate-pulse">Intercepting data stream...</span>';
+      maskedOutput.innerHTML = '<span class="animate-pulse">Analyzing outbound packet headers...</span>';
+      await new Promise(r => setTimeout(r, 600));
+
+      maskedOutput.innerHTML = '<span class="animate-pulse">Establishing secure Obsidian tunnel...</span>';
       await new Promise(r => setTimeout(r, 600));
 
       maskedOutput.innerText = masked;
-      output.innerHTML = '<span class="animate-pulse">Generating improved version...</span>';
+      output.innerHTML = '<span class="animate-pulse">Applying synthetic replacement layers...</span>';
       await new Promise(r => setTimeout(r, 800));
 
       updateUI('complete');
       output.innerText =
-        "Please provide a concise, structured response while preserving privacy constraints: " + masked;
+        "Secure Stream established. Privacy constraints active. Masked content: " + masked;
       
       btn.disabled = false;
       btn.innerText = 'SECURE & IMPROVE';
