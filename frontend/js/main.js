@@ -1,4 +1,4 @@
-// ARGUS OBSIDIAN - Main JavaScript
+// ARGUS OBSIDIAN - Main JavaScript (Integrated Version)
 
 // ============================================
 // Background Paths - Floating SVG Animation
@@ -35,18 +35,15 @@ function generateFloatingPaths(containerId, position) {
         path.setAttribute('fill', 'none');
         path.setAttribute('class', 'floating-path');
 
-        // Randomized duration matching framer-motion: 20 + Math.random() * 10
         const duration = 20 + Math.random() * 10;
-        // Negative delay so paths start at different phases
-        const delay = Math.random() * -30;
-        path.style.animation = `floatingPath ${duration}s linear ${delay}s infinite`;
+        const delayVal = Math.random() * -30;
+        path.style.animation = `floatingPath ${duration}s linear ${delayVal}s infinite`;
 
         svg.appendChild(path);
     }
 
     container.appendChild(svg);
     
-    // Add Intersection Observer to pause/play animations when in view
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -79,7 +76,6 @@ function animateHeroTitle() {
         word.split('').forEach((letter, letterIndex) => {
             const letterSpan = document.createElement('span');
             letterSpan.className = 'hero-letter';
-            // Staggered delay matching framer-motion: wordIndex * 0.1 + letterIndex * 0.03
             letterSpan.style.animationDelay = `${wordIndex * 0.1 + letterIndex * 0.03}s`;
             letterSpan.textContent = letter;
             wordSpan.appendChild(letterSpan);
@@ -88,118 +84,143 @@ function animateHeroTitle() {
         titleEl.appendChild(wordSpan);
     });
 }
-// Initialize DOM elements
+
+// ============================================
+// DELAY FUNCTION
+// ============================================
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// ============================================
+// INITIALIZATION & LOGIC
+// ============================================
+
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize Background Paths animation
-  generateFloatingPaths('paths-pos1', 1);
-  generateFloatingPaths('paths-neg1', -1);
-  animateHeroTitle();
+    // 1. Initialize UI Animations
+    generateFloatingPaths('paths-pos1', 1);
+    generateFloatingPaths('paths-neg1', -1);
+    animateHeroTitle();
 
-  const input = document.getElementById("userInput");
-  const btn = document.getElementById("processBtn");
-  const statusBadge = document.getElementById("statusBadge");
+    // 2. Element Definitions
+    const input = document.getElementById("userInput");
+    const btn = document.getElementById("processBtn");
+    const detectionPanel = document.getElementById("detectionPanel");
+    const maskedOutput = document.getElementById("maskedOutput");
+    const finalOutput = document.getElementById("finalOutput");
 
-  if (btn && input) {
-    btn.onclick = async () => {
-      const text = input.value;
-      if (!text.trim()) return;
+    let lastOutput = "";
 
-      btn.disabled = true;
-      btn.innerHTML = '<span class="animate-spin mr-2">⏳</span> SECURING...';
+    // 3. API URL Definition
+    const API_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+        ? "http://127.0.0.1:8000"
+        : "https://your-backend.onrender.com";
 
-      let emailCount = 0;
-      let phoneCount = 0;
-
-      const masked = text
-        .replace(/[\w.-]+@[\w.-]+/g, () => {
-          emailCount++;
-          return `[EMAIL_${emailCount}]`;
-        })
-        .replace(/\d{10}/g, () => {
-          phoneCount++;
-          return `[PHONE_${phoneCount}]`;
+    // 4. Real-Time Detection
+    if (input && detectionPanel) {
+        input.addEventListener("input", () => {
+            const text = input.value;
+            const emailMatches = text.match(/[\w.-]+@[\w.-]+/g) || [];
+            const phoneMatches = text.match(/\d{10}/g) || [];
+            const count = emailMatches.length + phoneMatches.length;
+            
+            detectionPanel.innerText = `${count} sensitive items detected`;
+            
+            // Optional: Preserve risk bar visuals if elements exist
+            const riskBar = document.getElementById("riskBar");
+            const riskLabel = document.getElementById("riskLabel");
+            if (riskBar && riskLabel) {
+                if (count === 0) {
+                    riskBar.style.width = "15%";
+                    riskBar.style.background = "#22c55e";
+                    riskLabel.innerText = "IDLE";
+                } else if (count === 1) {
+                    riskBar.style.width = "45%";
+                    riskBar.style.background = "#facc15";
+                    riskLabel.innerText = "ELEVATED_RISK";
+                } else {
+                    riskBar.style.width = "85%";
+                    riskBar.style.background = "#ef4444";
+                    riskLabel.innerText = "CRITICAL_RISK";
+                }
+            }
         });
-
-      const total = emailCount + phoneCount;
-
-      // Update UI panels with professional states
-      const updateUI = (state) => {
-          if (state === 'analyzing') {
-              statusBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse mr-2"></span>SECURITY_SCAN_ACTIVE';
-              statusBadge.className = "flex items-center px-3 py-1 rounded-full bg-yellow-400/10 text-yellow-400 text-[10px] font-bold tracking-widest";
-          } else if (state === 'complete') {
-              statusBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>STREAM_SECURE';
-              statusBadge.className = "flex items-center px-3 py-1 rounded-full bg-cyan-400/10 text-cyan-400 text-[10px] font-bold tracking-widest";
-          }
-      };
-
-      document.getElementById("detectionPanel").innerText =
-        `${total} PII leaks identified`;
-
-      // Risk bar logic
-      const riskBar = document.getElementById("riskBar");
-      const riskLabel = document.getElementById("riskLabel");
-      
-      if (total === 0) {
-        riskBar.style.width = "15%";
-        riskBar.style.background = "#22c55e";
-        if (riskLabel) riskLabel.innerText = "NO_THREAT_DETECTED";
-      } else if (total === 1) {
-        riskBar.style.width = "45%";
-        riskBar.style.background = "#facc15";
-        if (riskLabel) riskLabel.innerText = "ELEVATED_PRIVACY_RISK";
-      } else {
-        riskBar.style.width = "85%";
-        riskBar.style.background = "#ef4444";
-        if (riskLabel) riskLabel.innerText = "CRITICAL_DATA_EXPOSURE";
-      }
-
-      const output = document.getElementById("finalOutput");
-      const maskedOutput = document.getElementById("maskedOutput");
-
-      // Professional Intercept Sequence
-      updateUI('analyzing');
-      maskedOutput.innerHTML = '<span class="animate-pulse">Analyzing outbound packet headers...</span>';
-      await new Promise(r => setTimeout(r, 600));
-
-      maskedOutput.innerHTML = '<span class="animate-pulse">Establishing secure Obsidian tunnel...</span>';
-      await new Promise(r => setTimeout(r, 600));
-
-      maskedOutput.innerText = masked;
-      output.innerHTML = '<span class="animate-pulse">Applying synthetic replacement layers...</span>';
-      await new Promise(r => setTimeout(r, 800));
-
-      updateUI('complete');
-      output.innerText =
-        "Secure Stream established. Privacy constraints active. Masked content: " + masked;
-      
-      btn.disabled = false;
-      btn.innerText = 'SECURE & IMPROVE';
-    };
-  }
-
-  // Smooth scroll for navigation links
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      const href = this.getAttribute('href');
-      if (href !== '#' && document.querySelector(href)) {
-        e.preventDefault();
-        document.querySelector(href).scrollIntoView({
-          behavior: 'smooth'
-        });
-      }
-    });
-  });
-
-  // Get Started buttons event handler
-  document.querySelectorAll('button').forEach(btn => {
-    if (btn.textContent.includes('Get Started') || btn.textContent.includes('Start Securing') || btn.textContent.includes('See How It Works')) {
-      btn.addEventListener('click', () => {
-        const demoSection = document.getElementById('demo');
-        if (demoSection) {
-          demoSection.scrollIntoView({ behavior: 'smooth' });
-        }
-      });
     }
-  });
+
+    // 5. Button Click Logic
+    if (btn && input && finalOutput && maskedOutput) {
+        btn.onclick = async () => {
+            const text = input.value;
+
+            if (!text.trim()) {
+                finalOutput.innerText = "⚠️ Please enter some data.";
+                return;
+            }
+
+            btn.disabled = true;
+            try {
+                // Fake AI States (Text only, preserving UI lock)
+                finalOutput.innerText = "Analyzing...";
+                await delay(400);
+
+                finalOutput.innerText = "Masking sensitive data...";
+                await delay(400);
+
+                finalOutput.innerText = "Generating secure output...";
+                await delay(400);
+
+                // API Call
+                const res = await fetch(`${API_URL}/process`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ text })
+                });
+
+                if (!res.ok) throw new Error("API Failure");
+
+                const data = await res.json();
+
+                // Update UI (existing elements only)
+                maskedOutput.innerText = data.masked;
+
+                const improvedText = `Your data has been secured and optimized:\n\n• ${data.count} sensitive items masked\n• Structure improved for clarity\n• Safe for external sharing\n\n${data.masked}`;
+
+                finalOutput.innerText = improvedText;
+                detectionPanel.innerText = `${data.count} sensitive items detected`;
+                lastOutput = improvedText;
+
+            } catch (err) {
+                console.error(err);
+                finalOutput.innerText = "⚠️ Something went wrong. Try again.";
+            } finally {
+                btn.disabled = false;
+            }
+        };
+    }
+
+    // 6. Click to Copy (No button needed)
+    if (finalOutput) {
+        finalOutput.style.cursor = "pointer";
+        finalOutput.addEventListener("click", () => {
+            if (!lastOutput) return;
+
+            navigator.clipboard.writeText(lastOutput);
+            finalOutput.innerText = "✅ Copied to clipboard";
+
+            setTimeout(() => {
+                finalOutput.innerText = lastOutput;
+            }, 1500);
+        });
+    }
+
+    // 7. Smooth Scroll Support
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+            if (href !== '#' && document.querySelector(href)) {
+                e.preventDefault();
+                document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
 });
