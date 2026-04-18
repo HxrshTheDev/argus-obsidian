@@ -130,8 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3. API URL Definition
     const API_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-        ? "http://127.0.0.1:8000/api"
-        : "/api"; // Routing via vercel.json rewrites
+        ? "http://127.0.0.1:8000"
+        : "/_/backend"; // Routing via Vercel experimentalServices
 
 
     // PII CATEGORIES & REGEX (Tiers 1-8)

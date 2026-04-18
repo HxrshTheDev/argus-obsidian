@@ -34,12 +34,12 @@ class InputData(BaseModel):
     text: str
 
 # ===== HEALTH CHECK =====
-@app.get("/api/health")
+@app.get("/health")
 def health():
     return {"status": "ok"}
 
 # ===== MAIN PROCESS =====
-@app.post("/api/process")
+@app.post("/process")
 def process(data: InputData):
     text = data.text.strip()
 
