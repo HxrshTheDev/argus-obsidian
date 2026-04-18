@@ -2,8 +2,24 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import re
+import os
+import google.generativeai as genai
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# Configure Gemini
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+if GOOGLE_API_KEY:
+    genai.configure(api_key=GOOGLE_API_KEY)
+    model = genai.GenerativeModel("gemini-1.5-pro")
+else:
+    model = None
+
 
 app = FastAPI()
+
+
 
 # ===== CORS =====
 app.add_middleware(
@@ -97,9 +113,41 @@ def process(data: InputData):
         placeholder = f"[{match['category']}_{match['index']}]"
         current_text = current_text[:match["start"]] + placeholder + current_text[match["end"]:]
 
+    # ===== AI IMPROVEMENT LAYER =====
+    improved_text = current_text
+    if model and current_text.strip():
+        try:
+            prompt = f"""
+            Task: Improve the following text for professional clarity and impact.
+            Constraint 1: You MUST PRESERVE all placeholders like [EMAIL_1], [PHONE_1], [API_KEY_1], etc. exactly as they are.
+            Constraint 2: Do NOT provide any conversational preamble. Just return the improved text.
+            Constraint 3: Maintain the original intent but make it sound like a high-integrity secure report.
+
+            Text to improve:
+            {current_text}
+            """
+            response = model.generate_content(prompt)
+            
+            # Use safety check
+            if response and hasattr(response, 'text'):
+                try:
+                    improved_text = response.text.strip()
+                except ValueError:
+                    # This happens if the text was blocked by safety filters
+                    print("AI Improvement blocked by safety filters.")
+                    improved_text = current_text
+            elif response and response.candidates:
+                # Fallback check for candidates
+                improved_text = response.candidates[0].content.parts[0].text.strip()
+                
+        except Exception as e:
+            print(f"AI Improvement Error: {e}")
+            # Fallback to masked text remains current_text
+
     return {
         "masked": current_text,
         "count": len(matches),
-        "improved": current_text
+        "improved": improved_text
     }
+
 

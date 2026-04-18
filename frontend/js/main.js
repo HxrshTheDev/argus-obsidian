@@ -131,7 +131,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. API URL Definition
     const API_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
         ? "http://127.0.0.1:8000"
-        : "https://your-backend.onrender.com";
+        : "/api"; // Routing via vercel.json rewrites
+
 
     // PII CATEGORIES & REGEX (Tiers 1-8)
     const PII_RULES = [
@@ -323,18 +324,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 await delay(400);
 
                 finalOutput.innerText = "FINALIZING_SECURE_OUTPUT...";
-                await delay(400);
+                
+                const response = await fetch(`${API_URL}/process`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: text })
+                });
 
-                const totalPII = piiVault.counts.total;
-                const improvedText = `STREAM_SECURED_FOR_AI_OUTBOUND:\n\n• ${totalPII} SENSITIVE_UNITS_NEUTRALIZED\n• PROTOCOL_OBSIDIAN_VERIFIED\n• AI_READY_STATE_CONFIRMED\n\n${text}`;
+                if (!response.ok) {
+                    throw new Error(`API_RESPONSE_FAIL: ${response.status}`);
+                }
 
-                finalOutput.innerText = improvedText;
-                lastOutput = improvedText;
-
+                const data = await response.json();
+                
+                // Ensure we handle the response correctly
+                const resultText = data.improved || data.masked || text;
+                
+                finalOutput.innerText = resultText;
+                lastOutput = resultText;
 
             } catch (err) {
                 console.error(err);
-                finalOutput.innerText = "⚠️ Security handshake failed. Try again.";
+                finalOutput.innerText = `⚠️ SECURITY_HANDSHAKE_FAILED: ${err.message}`;
             } finally {
                 btn.disabled = false;
             }
