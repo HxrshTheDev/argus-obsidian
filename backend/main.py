@@ -16,7 +16,6 @@ if GOOGLE_API_KEY:
 else:
     model = None
 
-
 app = FastAPI()
 
 
@@ -52,16 +51,16 @@ def process(data: InputData):
 
     # Tiered Detection Rules (Ordered by priority)
     RULES = [
-        ("API_KEY",  r"(?:sk|pk)-[A-Za-z0-9]{20,}|pk_[A-Za-z0-9]{20,}", re.IGNORECASE),
-        ("SECRET",   r"(?:api[-]?key|token|secret)\s*[:=]\s*[A-Za-z0-9-]{10,}", re.IGNORECASE),
-        ("TOKEN",    r"Bearer\s+[A-Za-z0-9-._~+/]+=*", re.IGNORECASE),
-        ("TOKEN",    r"[A-Za-z0-9_-]{20,}", 0),
-        ("PASSWORD", r"(?:password|pwd|pass)\s*[:=]\s*\S+", re.IGNORECASE),
+        ("API_KEY",  r"\b[A-Za-z0-9_-]{20,}\b|\bsk-[A-Za-z0-9]{20,}\b|\bpk_[A-Za-z0-9]{20,}\b|\b(?:api[-]?key|token|secret)\s*[:=]\s*[A-Za-z0-9-]{10,}\b", re.IGNORECASE),
+        ("TOKEN",    r"\bBearer\s+[A-Za-z0-9-._~+/]+=*\b", re.IGNORECASE),
+        ("PASSWORD", r"\b(?:password|pwd|pass)\s*[:=]\s*\S+\b", re.IGNORECASE),
+        ("CARD",     r"\b\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}\b", 0),
+        ("URL_CRED", r"https?:\/\/[^\s:@]+:[^\s:@]+@[^\s\/:]+(?::\d+)?(?:\/[^\s]*)?", re.IGNORECASE),
         ("EMAIL",    r"[\w.-]+@[\w.-]+", 0),
-        ("PHONE",    r"\d{3}[-.\s]?\d{3}[-.\s]?\d{4}|\d{10}", 0),
-        ("ADDRESS",  r"\d{1,5}\s\w+\s(?:Street|St|Road|Rd|Avenue|Ave|Lane|Ln|Blvd)", re.IGNORECASE),
-        ("ID",       r"\d{6,}", 0),
-        ("NAME",     r"[A-Z][a-z]+\s[A-Z][a-z]+", 0)
+        ("PHONE",    r"\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b|\b\d{10}\b", 0),
+        ("ADDRESS",  r"\b\d{1,5}\s\w+\s(?:Street|St|Road|Rd|Avenue|Ave|Lane|Ln|Blvd)\b", re.IGNORECASE),
+        ("ID",       r"\b\d{6,}\b", 0),
+        ("NAME",     r"\b[A-Z][a-z]+\s[A-Z][a-z]+\b", 0)
     ]
 
     matches = []
@@ -118,31 +117,25 @@ def process(data: InputData):
     if model and current_text.strip():
         try:
             prompt = f"""
-            Task: Improve the following text for professional clarity and impact.
-            Constraint 1: You MUST PRESERVE all placeholders like [EMAIL_1], [PHONE_1], [API_KEY_1], etc. exactly as they are.
-            Constraint 2: Do NOT provide any conversational preamble. Just return the improved text.
-            Constraint 3: Maintain the original intent but make it sound like a high-integrity secure report.
-
-            Text to improve:
+            Task: Provide a helpful, intelligent response to the following prompt. 
+            Constraint 1: You MUST PRESERVE all placeholders like [EMAIL_1], [PHONE_1], [API_KEY_1], etc. exactly format-wise.
+            Constraint 2: Do NOT provide conversational preamble. You must output a direct, seamless reply.
+            
+            Prompt:
             {current_text}
             """
             response = model.generate_content(prompt)
             
-            # Use safety check
             if response and hasattr(response, 'text'):
                 try:
                     improved_text = response.text.strip()
                 except ValueError:
-                    # This happens if the text was blocked by safety filters
-                    print("AI Improvement blocked by safety filters.")
                     improved_text = current_text
-            elif response and response.candidates:
-                # Fallback check for candidates
+            elif response and hasattr(response, 'candidates') and response.candidates:
                 improved_text = response.candidates[0].content.parts[0].text.strip()
                 
         except Exception as e:
-            print(f"AI Improvement Error: {e}")
-            # Fallback to masked text remains current_text
+            print(f"AI Error: {e}")
 
     return {
         "masked": current_text,

@@ -134,18 +134,18 @@ document.addEventListener('DOMContentLoaded', () => {
         : "/_/backend"; // Routing via Vercel experimentalServices
 
 
-    // PII CATEGORIES & REGEX (Tiers 1-8)
+    // PII CATEGORIES & REGEX (Strict execution order)
     const PII_RULES = [
-        { type: 'API_KEY',  regex: /\b(?:sk|pk)-[A-Za-z0-9]{20,}\b|\bpk_[A-Za-z0-9]{20,}\b/g },
-        { type: 'SECRET',   regex: /\b(?:api[-]?key|token|secret)\s*[:=]\s*[A-Za-z0-9-]{10,}\b/gi },
-        { type: 'TOKEN',    regex: /\b[A-Za-z0-9_-]{20,}\b/g }, // High entropy generic
-        { type: 'TOKEN',    regex: /\bBearer\s+[A-Za-z0-9-._~+/]+=*\b/gi }, // Auth Header
-        { type: 'PASSWORD', regex: /\b(?:password|pwd|pass)\s*[:=]\s*\S+\b/gi },
-        { type: 'EMAIL',    regex: /[a-zA-Z0-9._%+-]+@[\w.-]+\.[a-zA-Z]{2,}(?!\w)/g },
-        { type: 'PHONE',    regex: /\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b|\b\d{10}\b/g },
-        { type: 'ADDRESS',  regex: /\b\d{1,5}\s\w+\s(?:Street|St|Road|Rd|Avenue|Ave|Lane|Ln|Blvd)\b/gi },
-        { type: 'ID',       regex: /\b\d{6,}\b/g },
-        { type: 'NAME',     regex: /\b[A-Z][a-z]+\s[A-Z][a-z]+\b/g }
+        { type: 'API_KEY',    regex: /\b[A-Za-z0-9_-]{20,}\b|\bsk-[A-Za-z0-9]{20,}\b|\bpk_[A-Za-z0-9]{20,}\b|\b(?:api[-]?key|token|secret)\s*[:=]\s*[A-Za-z0-9-]{10,}\b/gi },
+        { type: 'TOKEN',      regex: /\bBearer\s+[A-Za-z0-9-._~+/]+=*\b/gi },
+        { type: 'PASSWORD',   regex: /\b(?:password|pwd|pass)\s*[:=]\s*\S+\b/gi },
+        { type: 'CARD',       regex: /\b\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}\b/g },
+        { type: 'URL_CRED',   regex: /https?:\/\/[^\s:@]+:[^\s:@]+@[^\s\/:]+(?::\d+)?(?:\/[^\s]*)?/gi },
+        { type: 'EMAIL',      regex: /[\w.-]+@[\w.-]+/g },
+        { type: 'PHONE',      regex: /\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b|\b\d{10}\b/g },
+        { type: 'ADDRESS',    regex: /\b\d{1,5}\s\w+\s(?:Street|St|Road|Rd|Avenue|Ave|Lane|Ln|Blvd)\b/gi },
+        { type: 'ID',         regex: /\b\d{6,}\b/g },
+        { type: 'NAME',       regex: /\b[A-Z][a-z]+\s[A-Z][a-z]+\b/g }
     ];
 
     /**
@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // 4. Update Vault
-        const tokenRegex = /\[(API_KEY|TOKEN|SECRET|PASSWORD|EMAIL|PHONE|ADDRESS|ID|NAME)_\d+\]/g;
+        const tokenRegex = /\[(API_KEY|TOKEN|PASSWORD|CARD|URL_CRED|EMAIL|PHONE|ADDRESS|ID|NAME)_\d+\]/g;
         const totalMatches = (newText.match(tokenRegex) || []).length;
 
         piiVault.mappings = currentMappings;
