@@ -138,11 +138,12 @@
         <section id="demo" class="py-32 px-6 bg-[#050505] relative overflow-hidden">
             <!-- Background Scanline Effect -->
             <div class="scanline"></div>
-            
+
             <div class="max-w-7xl mx-auto relative z-20">
                 <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-8">
                     <div>
-                        <div id="statusBadge" class="inline-flex items-center px-3 py-1 rounded bg-cyan-400/10 text-cyan-400 text-[10px] font-bold tracking-[0.3em] mb-6 border border-cyan-400/20">
+                        <div id="statusBadge"
+                            class="inline-flex items-center px-3 py-1 rounded bg-cyan-400/10 text-cyan-400 text-[10px] font-bold tracking-[0.3em] mb-6 border border-cyan-400/20">
                             <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 mr-2 shadow-[0_0_8px_#22d3ee]"></span>
                             STREAM_LISTENER_ACTIVE
                         </div>
@@ -150,7 +151,8 @@
                             Argus Intercept
                         </h2>
                         <p class="text-white/40 font-body text-lg max-w-xl border-l border-cyan-400/30 pl-6">
-                            Autonomous privacy filtering for neural outbound streams. Neutralize data leaks before they reach the cloud.
+                            Autonomous privacy filtering for neural outbound streams. Neutralize data leaks before they
+                            reach the cloud.
                         </p>
                     </div>
                     <div class="flex flex-col gap-2 text-right">
@@ -159,10 +161,12 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-1 mb-8 border border-white/10 rounded-2xl overflow-hidden terminal-window">
+                <div
+                    class="grid grid-cols-1 lg:grid-cols-12 gap-1 mb-8 border border-white/10 rounded-2xl overflow-hidden terminal-window">
                     <!-- LEFT: RAW STREAM -->
                     <div class="lg:col-span-6 flex flex-col bg-[#080808] border-r border-white/10">
-                        <div class="px-6 py-4 flex justify-between items-center border-b border-white/5 bg-white/[0.02]">
+                        <div
+                            class="px-6 py-4 flex justify-between items-center border-b border-white/5 bg-white/[0.02]">
                             <span class="stream-label flex items-center gap-2">
                                 <span class="w-1 h-1 rounded-full bg-red-500 animate-pulse"></span>
                                 RAW_UNSECURED_STREAM
@@ -178,7 +182,8 @@
 
                     <!-- RIGHT: PROCESSED STREAM -->
                     <div class="lg:col-span-6 flex flex-col bg-[#000000]">
-                        <div class="px-6 py-4 flex justify-between items-center border-b border-white/5 bg-white/[0.01]">
+                        <div
+                            class="px-6 py-4 flex justify-between items-center border-b border-white/5 bg-white/[0.01]">
                             <span class="stream-label flex items-center gap-2">
                                 <span class="w-1 h-1 rounded-full bg-cyan-400"></span>
                                 SECURED_OBSIDIAN_STREAM
@@ -190,11 +195,16 @@
                                 <div>
                                     <p class="stream-label mb-4">PII_DETECTION_ENGINE</p>
                                     <div class="p-6 rounded-lg bg-white/[0.02] border border-white/5">
-                                        <p id="detectionPanel" class="text-white text-base font-bold mb-4 tracking-tight">Scanner Standby...</p>
+                                        <p id="detectionPanel"
+                                            class="text-white text-base font-bold mb-4 tracking-tight">Scanner
+                                            Standby...</p>
                                         <div class="space-y-4">
                                             <div class="flex justify-between items-center">
-                                                <span id="riskLabel" class="text-[9px] font-black text-white/30 tracking-widest uppercase">IDLE</span>
-                                                <span class="text-[9px] font-black text-white/20 tracking-tighter uppercase">Threat Index</span>
+                                                <span id="riskLabel"
+                                                    class="text-[9px] font-black text-white/30 tracking-widest uppercase">IDLE</span>
+                                                <span
+                                                    class="text-[9px] font-black text-white/20 tracking-tighter uppercase">Threat
+                                                    Index</span>
                                             </div>
                                             <div class="risk-bar-container">
                                                 <div id="riskBar" class="risk-bar-fill h-full bg-white/10 w-0"></div>
@@ -205,11 +215,15 @@
                                 <div class="space-y-8">
                                     <div>
                                         <p class="stream-label mb-3">MASKED_TRANSFORMATION</p>
-                                        <p id="maskedOutput" class="text-white/40 font-mono text-xs leading-relaxed italic border-l-2 border-white/10 pl-4 py-2">Waiting for stream intercept...</p>
+                                        <p id="maskedOutput"
+                                            class="text-white/40 font-mono text-xs leading-relaxed italic border-l-2 border-white/10 pl-4 py-2">
+                                            Waiting for stream intercept...</p>
                                     </div>
                                     <div>
                                         <p class="stream-label mb-3">REFINED_SECURE_STREAM</p>
-                                        <p id="finalOutput" class="text-white/80 font-mono text-xs leading-relaxed italic border-l-2 border-cyan-400/20 pl-4 py-2">Stream not established.</p>
+                                        <p id="finalOutput"
+                                            class="text-white/80 font-mono text-xs leading-relaxed italic border-l-2 border-cyan-400/20 pl-4 py-2">
+                                            Stream not established.</p>
                                     </div>
                                 </div>
                             </div>
@@ -217,7 +231,8 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col md:flex-row gap-8 items-center justify-between p-8 glass-card rounded-2xl border-white/5 shadow-none hover:border-cyan-400/20 transition-colors">
+                <div
+                    class="flex flex-col md:flex-row gap-8 items-center justify-between p-8 glass-card rounded-2xl border-white/5 shadow-none hover:border-cyan-400/20 transition-colors">
                     <div class="flex flex-wrap gap-10">
                         <div class="flex flex-col gap-1">
                             <span class="stream-label">LATENCY</span>

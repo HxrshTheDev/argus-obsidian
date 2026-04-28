@@ -3,18 +3,20 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import re
 import os
-import google.generativeai as genai
+from openai import OpenAI
 from dotenv import load_dotenv
 
 load_dotenv()
 
-# Configure Gemini
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-if GOOGLE_API_KEY:
-    genai.configure(api_key=GOOGLE_API_KEY)
-    model = genai.GenerativeModel("gemini-2.5-pro")
+# Configure NVIDIA NIM client (Nemotron)
+NVIDIA_API_KEY = os.getenv("NVIDIA_API_KEY")
+if NVIDIA_API_KEY:
+    nim_client = OpenAI(
+        base_url="https://integrate.api.nvidia.com/v1",
+        api_key=NVIDIA_API_KEY,
+    )
 else:
-    model = None
+    nim_client = None
 
 app = FastAPI()
 
@@ -112,28 +114,37 @@ def process(data: InputData):
         placeholder = f"[{match['category']}_{match['index']}]"
         current_text = current_text[:match["start"]] + placeholder + current_text[match["end"]:]
 
-    # ===== AI IMPROVEMENT LAYER =====
+    # ===== AI IMPROVEMENT LAYER (NVIDIA Nemotron) =====
     improved_text = current_text
-    if model and current_text.strip():
+    if nim_client and current_text.strip():
         try:
-            prompt = f"""
-            Task: Provide a helpful, intelligent response to the following prompt. 
-            Constraint 1: You MUST PRESERVE all placeholders like [EMAIL_1], [PHONE_1], [API_KEY_1], etc. exactly format-wise.
-            Constraint 2: Do NOT provide conversational preamble. You must output a direct, seamless reply.
-            
-            Prompt:
-            {current_text}
-            """
-            response = model.generate_content(prompt)
-            
-            if response and hasattr(response, 'text'):
-                try:
-                    improved_text = response.text.strip()
-                except ValueError:
-                    improved_text = current_text
-            elif response and hasattr(response, 'candidates') and response.candidates:
-                improved_text = response.candidates[0].content.parts[0].text.strip()
-                
+            prompt = (
+                "Task: Provide a helpful, intelligent response to the following prompt.\n"
+                "Constraint 1: You MUST PRESERVE all placeholders like [EMAIL_1], [PHONE_1], "
+                "[API_KEY_1], etc. exactly format-wise.\n"
+                "Constraint 2: Do NOT provide conversational preamble. Output a direct, seamless reply.\n\n"
+                f"Prompt:\n{current_text}"
+            )
+            completion = nim_client.chat.completions.create(
+                model="nvidia/nemotron-3-super-120b-a12b",
+                messages=[{"role": "user", "content": prompt}],
+                temperature=1,
+                top_p=0.95,
+                max_tokens=16384,
+                extra_body={
+                    "chat_template_kwargs": {"enable_thinking": True},
+                    "reasoning_budget": 16384,
+                },
+                stream=True,
+            )
+            reply_parts = []
+            for chunk in completion:
+                if not chunk.choices:
+                    continue
+                delta = chunk.choices[0].delta
+                if delta.content:
+                    reply_parts.append(delta.content)
+            improved_text = "".join(reply_parts).strip() or current_text
         except Exception as e:
             print(f"AI Error: {e}")
 
