@@ -1,0 +1,10 @@
+{
+  "name": "argus-obsidian-root",
+  "version": "1.0.0",
+  "description": "Root management for ARGUS Obsidian",
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "backend": "cd backend && python -m uvicorn main:app --reload",
+    "all": "npm run dev & npm run backend"
+  }
+}
