@@ -3,11 +3,13 @@ import React, { useEffect, useRef, ReactNode } from 'react';
 interface GlowCardProps {
   children: ReactNode;
   className?: string;
+  style?: React.CSSProperties;
   glowColor?: 'blue' | 'lightblue' | 'purple' | 'green' | 'red' | 'orange';
   size?: 'sm' | 'md' | 'lg';
   width?: string | number;
   height?: string | number;
   customSize?: boolean;
+  glowOpacity?: number;
 }
 
 const glowColorMap = {
@@ -82,11 +84,13 @@ const GLOW_STYLES = `
 const GlowCard: React.FC<GlowCardProps> = ({
   children,
   className = '',
+  style: styleProp,
   glowColor = 'blue',
   size = 'md',
   width,
   height,
   customSize = false,
+  glowOpacity = 1,
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -111,13 +115,16 @@ const GlowCard: React.FC<GlowCardProps> = ({
     '--spread': spread,
     '--radius': '14',
     '--border': '3',
-    '--backdrop': 'hsl(0 0% 60% / 0.12)',
+    '--backdrop': `hsl(0 0% 60% / ${(0.12 * glowOpacity).toFixed(3)})`,
     '--backup-border': 'var(--backdrop)',
     '--size': '200',
     '--outer': '1',
     '--border-size': 'calc(var(--border, 2) * 1px)',
     '--spotlight-size': 'calc(var(--size, 150) * 1px)',
     '--hue': 'calc(var(--base) + (var(--xp, 0) * var(--spread, 0)))',
+    '--border-spot-opacity': glowOpacity.toFixed(3),
+    '--border-light-opacity': glowOpacity.toFixed(3),
+    '--bg-spot-opacity': (0.1 * glowOpacity).toFixed(3),
     backgroundImage: `radial-gradient(
       var(--spotlight-size) var(--spotlight-size) at
       calc(var(--x, 0) * 1px) calc(var(--y, 0) * 1px),
@@ -140,7 +147,7 @@ const GlowCard: React.FC<GlowCardProps> = ({
       <div
         ref={cardRef}
         data-glow
-        style={inlineStyles}
+        style={{ ...inlineStyles, ...styleProp }}
         className={`
           ${!customSize ? sizeMap[size] : ''}
           rounded-2xl relative grid grid-rows-[1fr_auto]

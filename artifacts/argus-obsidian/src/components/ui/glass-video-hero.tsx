@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Maximize2, Minimize2 } from "lucide-react";
 
 const VIDEO_URL =
@@ -12,14 +12,37 @@ const HeroSection = ({
   onScrollToFeatures?: (e: React.MouseEvent) => void;
 }) => {
   const [fullBleed, setFullBleed] = useState(true);
+  const sectionRef = useRef<HTMLElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    const glow = glowRef.current;
+    if (!section || !glow) return;
+    const onMove = (e: PointerEvent) => {
+      const rect = section.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      glow.style.background = `radial-gradient(600px 600px at ${x}px ${y}px, rgba(153,247,255,0.07) 0%, transparent 70%)`;
+    };
+    section.addEventListener('pointermove', onMove);
+    return () => section.removeEventListener('pointermove', onMove);
+  }, []);
 
   return (
     <section
+      ref={sectionRef}
       id="hero"
       className={`relative w-full overflow-hidden transition-all duration-500 ease-in-out bg-[#0e0e0e] ${
         fullBleed ? "min-h-screen" : "py-32 lg:py-40"
       }`}
     >
+      {/* Cursor glow overlay */}
+      <div
+        ref={glowRef}
+        className="absolute inset-0 z-[1] pointer-events-none transition-[background] duration-75"
+      />
+
       {/* Height toggle */}
       <button
         onClick={() => setFullBleed(!fullBleed)}
@@ -40,7 +63,6 @@ const HeroSection = ({
       >
         <source src={VIDEO_URL} type="video/mp4" />
       </video>
-
 
       {/* Bottom fade */}
       <div
