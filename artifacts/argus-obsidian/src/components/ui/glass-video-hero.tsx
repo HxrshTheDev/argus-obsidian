@@ -1,34 +1,35 @@
 import { useState } from "react";
 import { Maximize2, Minimize2 } from "lucide-react";
 
+const VIDEO_URL =
+  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260210_031346_d87182fb-b0af-4273-84d1-c6fd17d6bf0f.mp4";
+
 const HeroSection = ({
-  onScrollToDemo: _onScrollToDemo,
-  onScrollToFeatures: _onScrollToFeatures,
+  onScrollToDemo,
+  onScrollToFeatures,
 }: {
   onScrollToDemo?: (e: React.MouseEvent) => void;
   onScrollToFeatures?: (e: React.MouseEvent) => void;
 }) => {
   const [fullBleed, setFullBleed] = useState(true);
 
-  const VIDEO_URL =
-    "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260210_031346_d87182fb-b0af-4273-84d1-c6fd17d6bf0f.mp4";
-
   return (
     <section
-      className={`relative w-full overflow-hidden transition-all duration-500 ease-in-out ${
+      id="hero"
+      className={`relative w-full overflow-hidden transition-all duration-500 ease-in-out bg-[#0e0e0e] ${
         fullBleed ? "min-h-screen" : "py-32 lg:py-40"
       }`}
     >
-      {/* Height Toggle */}
+      {/* Height toggle */}
       <button
         onClick={() => setFullBleed(!fullBleed)}
         aria-label={fullBleed ? "Switch to fit-to-content" : "Switch to full-bleed"}
-        className="absolute top-4 right-4 z-20 p-2.5 rounded-[10px] backdrop-blur-xl border border-[rgba(164,132,215,0.5)] bg-[rgba(85,80,110,0.4)] text-foreground hover:bg-[rgba(85,80,110,0.6)] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        className="absolute top-24 right-5 z-20 p-2 rounded-lg border border-white/10 bg-white/5 text-white/40 hover:text-white/80 hover:bg-white/10 hover:border-white/20 transition-all focus:outline-none"
       >
-        {fullBleed ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+        {fullBleed ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
       </button>
 
-      {/* Video Background */}
+      {/* Video background */}
       <video
         autoPlay
         loop
@@ -39,47 +40,146 @@ const HeroSection = ({
         <source src={VIDEO_URL} type="video/mp4" />
       </video>
 
-      {/* Hero Content */}
-      <div className="relative z-10 flex flex-col items-center text-center mt-32 px-6">
-        {/* Tagline Pill */}
-        <div className="inline-flex items-center gap-2.5 h-[38px] px-3.5 rounded-[10px] backdrop-blur-xl border border-[rgba(164,132,215,0.5)] bg-[rgba(85,80,110,0.4)] shadow-[0_0_20px_rgba(123,57,252,0.15),inset_0_1px_0_rgba(255,255,255,0.08)]">
-          <span className="bg-primary text-primary-foreground font-cabin font-medium text-xs px-2.5 py-1 rounded-[6px] shadow-[0_0_8px_rgba(123,57,252,0.4)]">
-            New
+      {/* Hero content */}
+      <div className="relative z-10 flex flex-col items-center text-center mt-36 px-6 pb-24">
+
+        {/* Badge */}
+        <div
+          className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-lg border border-white/[0.08] bg-white/[0.03] mb-10 hero-fade-in"
+          style={{ animationDelay: "0.1s" }}
+        >
+          <span
+            className="text-[10px] font-black px-2 py-0.5 rounded tracking-widest uppercase"
+            style={{
+              background: "linear-gradient(135deg, #99f7ff, #7ce8ff)",
+              color: "#00292c",
+              fontFamily: "Space Grotesk, sans-serif",
+            }}
+          >
+            Beta
           </span>
-          <span className="font-cabin font-medium text-sm text-foreground tracking-wide">
-            Say Hello to Datacore v3.2
+          <span
+            className="text-[11px] tracking-[0.2em] uppercase"
+            style={{
+              fontFamily: "Space Grotesk, sans-serif",
+              color: "rgba(190,220,225,0.45)",
+            }}
+          >
+            Privacy-First AI Middleware
           </span>
         </div>
 
         {/* Headline */}
-        <h1 className="font-instrument text-foreground text-5xl lg:text-[96px] leading-[1.05] tracking-[-0.02em] mt-8 max-w-5xl">
-          Book your perfect stay
-          <br className="hidden lg:block" />
-          instantly{" "}
-          <em
-            className="italic mx-[0.08em] relative inline-block"
-            style={{ fontStyle: "italic" }}
+        <h1
+          className="leading-[1.04] tracking-[-0.03em] hero-fade-in"
+          style={{
+            fontFamily: "Manrope, sans-serif",
+            fontSize: "clamp(2.6rem, 6.5vw, 5.6rem)",
+            fontWeight: 800,
+            color: "#dff0f3",
+            animationDelay: "0.25s",
+          }}
+        >
+          The invisible layer
+          <br />
+          between your{" "}
+          <span
+            className="text-transparent bg-clip-text"
+            style={{
+              backgroundImage: "linear-gradient(135deg, #99f7ff 15%, #c4a8ff 85%)",
+            }}
           >
-            and
-          </em>{" "}
-          hassle-free
+            data and AI.
+          </span>
         </h1>
 
         {/* Subtext */}
-        <p className="font-inter font-normal text-lg text-muted-foreground mt-6 max-w-[662px]">
-          Discover handpicked hotels, resorts, and stays across your favorite
-          destinations. Enjoy exclusive deals, fast booking, and 24/7 support.
+        <p
+          className="mt-6 max-w-[520px] leading-relaxed hero-fade-in"
+          style={{
+            fontFamily: "Inter, sans-serif",
+            fontSize: "0.975rem",
+            color: "rgba(168,200,208,0.55)",
+            animationDelay: "0.4s",
+          }}
+        >
+          Detect sensitive PII in real time, replace it with synthetic tokens,
+          and restore the original after your AI responds — 100% client-side,
+          zero data stored.
         </p>
 
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row items-center gap-4 mt-8">
-          <button className="px-8 py-3.5 rounded-[10px] bg-primary text-primary-foreground font-cabin font-medium text-base hover:brightness-110 transition-all shadow-lg shadow-primary/25">
-            Book a Free Demo
-          </button>
-          <button className="px-8 py-3.5 rounded-[10px] bg-secondary text-secondary-foreground font-cabin font-medium text-base hover:brightness-125 transition-all">
-            Get Started Now
-          </button>
+        {/* Trust line */}
+        <p
+          className="text-[10px] uppercase tracking-[0.35em] mt-4 hero-fade-in"
+          style={{
+            fontFamily: "Space Grotesk, sans-serif",
+            color: "rgba(140,185,195,0.28)",
+            animationDelay: "0.5s",
+          }}
+        >
+          Prevent data exposure · Stay private · Stay in control
+        </p>
+
+        {/* CTAs */}
+        <div
+          className="flex flex-col sm:flex-row items-center gap-3 mt-10 hero-fade-in"
+          style={{ animationDelay: "0.6s" }}
+        >
+          <a
+            href="#demo"
+            onClick={onScrollToDemo}
+            className="px-8 py-3 rounded-full font-bold text-sm tracking-tight transition-all hover:scale-105 active:scale-95 glow-primary inline-block"
+            style={{
+              fontFamily: "Manrope, sans-serif",
+              background: "linear-gradient(135deg, #99f7ff 0%, #6fe8f0 100%)",
+              color: "#003538",
+            }}
+          >
+            Start Securing
+          </a>
+
+          <a
+            href="#features"
+            onClick={onScrollToFeatures}
+            className="px-8 py-3 rounded-full font-semibold text-sm border border-white/[0.1] transition-all duration-300 inline-block hover:border-white/20"
+            style={{
+              fontFamily: "Manrope, sans-serif",
+              color: "rgba(190,220,228,0.6)",
+            }}
+            onMouseEnter={e => (e.currentTarget.style.color = "#dff0f3")}
+            onMouseLeave={e => (e.currentTarget.style.color = "rgba(190,220,228,0.6)")}
+          >
+            See How It Works
+            <span className="ml-2 opacity-50 inline-block">→</span>
+          </a>
         </div>
+
+        {/* Stats */}
+        <div
+          className="flex flex-wrap justify-center gap-3 mt-14 hero-fade-in"
+          style={{ animationDelay: "0.75s" }}
+        >
+          {[
+            { label: "Accuracy", value: "99.98%" },
+            { label: "Latency",  value: "0.42ms" },
+            { label: "Coverage", value: "10 PII types" },
+            { label: "Mode",     value: "Client-Side" },
+          ].map((stat) => (
+            <div
+              key={stat.label}
+              className="flex items-center gap-2.5 px-4 py-2 rounded-full border border-white/[0.06] bg-white/[0.025]"
+            >
+              <span style={{ fontFamily: "Space Grotesk, sans-serif", fontSize: "9px", color: "rgba(140,185,195,0.4)", letterSpacing: "0.2em", textTransform: "uppercase" }}>
+                {stat.label}
+              </span>
+              <span className="w-px h-2.5 bg-white/[0.08]" />
+              <span style={{ fontFamily: "Space Grotesk, sans-serif", fontSize: "11px", fontWeight: 700, color: "rgba(190,228,235,0.75)" }}>
+                {stat.value}
+              </span>
+            </div>
+          ))}
+        </div>
+
       </div>
     </section>
   );
