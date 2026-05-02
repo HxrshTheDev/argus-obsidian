@@ -1,5 +1,5 @@
 import express from "express";
-import app from "../artifacts/api-server/src/app.js";
+import app from "../backend/src/app.js";
 
 const mainApp = express();
 

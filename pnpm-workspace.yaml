@@ -1,5 +1,6 @@
 packages:
-  - artifacts/*
+  - frontend
+  - backend
   - lib/*
   - lib/integrations/*
   - scripts

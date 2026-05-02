@@ -7,7 +7,7 @@
       "@workspace/*": ["lib/*"]
     }
   },
-  "include": ["api/**/*", "lib/**/*"],
+  "include": ["api/**/*", "lib/**/*", "frontend/**/*", "backend/**/*"],
   "references": [
     {
       "path": "./lib/db"
@@ -17,6 +17,12 @@
     },
     {
       "path": "./lib/api-zod"
+    },
+    {
+      "path": "./frontend"
+    },
+    {
+      "path": "./backend"
     }
   ]
 }
