@@ -1,4 +1,9 @@
 import express from "express";
 import app from "../artifacts/api-server/src/app.js";
 
-export default app;
+const mainApp = express();
+
+// Explicitly use the imported app as middleware
+mainApp.use(app);
+
+export default mainApp;
