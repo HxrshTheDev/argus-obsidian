@@ -31,6 +31,11 @@ A privacy-first AI data protection tool that detects, masks, and restores PII in
 - **API codegen**: Orval (from OpenAPI spec)
 - **Build**: esbuild (CJS bundle)
 
+## Important Notes
+
+- `PORT` and `BASE_PATH` environment variables are **required** for the frontend to start. These are automatically provided by Replit workflows — do not run `pnpm dev` directly at the package level without setting them.
+- The PII masking logic exists in two places: client-side (real-time, in `Home.tsx`) and server-side (`process.ts`). If you update detection rules, update both to keep them in sync.
+
 ## Key Commands
 
 - `pnpm run typecheck` — full typecheck across all packages
