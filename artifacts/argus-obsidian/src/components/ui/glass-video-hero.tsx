@@ -42,15 +42,6 @@ const HeroSection = ({
       </video>
 
 
-      {/* Bottom fade */}
-      <div
-        className="absolute bottom-0 left-0 right-0 z-[2] pointer-events-none"
-        style={{
-          height: "220px",
-          background: "linear-gradient(to bottom, transparent 0%, #0e0e0e 100%)",
-        }}
-      />
-
       {/* Hero content */}
       <div className="relative z-10 flex flex-col items-center text-center mt-36 px-6 pb-24">
 
