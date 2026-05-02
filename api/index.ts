@@ -6,6 +6,4 @@ const mainApp = express();
 // Explicitly use the imported app as middleware
 mainApp.use(app);
 
-export default function (req: any, res: any) {
-  return mainApp(req, res);
-}
+export default mainApp;
