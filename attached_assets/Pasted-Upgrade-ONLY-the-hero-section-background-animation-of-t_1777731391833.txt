@@ -1,0 +1,119 @@
+Upgrade ONLY the hero section background animation of the existing ARGUS OBSIDIAN project.
+
+CRITICAL RULES:
+
+* DO NOT convert project to React
+* DO NOT change layout, structure, or UI design
+* DO NOT modify text, buttons, or spacing
+* ONLY enhance background animation
+* MUST be smooth and lag-free on mobile devices
+* NO heavy video backgrounds
+* NO large blur effects
+* NO expensive CSS filters
+
+---
+
+🎯 OBJECTIVE
+
+Create a premium animated hero background similar to modern AI websites (clean, flowing, elegant), but lightweight and performant.
+
+---
+
+⚡ IMPLEMENTATION REQUIREMENTS
+
+1. Replace current hero background with:
+
+   * Animated SVG path lines OR subtle grid glow animation
+   * Use CSS + minimal JS only
+   * No external heavy libraries
+
+2. Animation style:
+
+   * slow moving lines / paths
+   * subtle opacity pulsing
+   * smooth infinite animation
+   * premium "AI system" feel
+
+3. Performance rules:
+
+   * use transform + opacity only
+   * avoid repaint-heavy properties
+   * use will-change: transform
+   * max 20–30 elements (not 100+)
+   * disable animation on low-end devices if needed
+
+---
+
+🎨 VISUAL STYLE
+
+* Dark theme compatible
+* Cyan / purple glow accents (#99F7FF / #AC89FF)
+* Very subtle motion (not distracting)
+* Background must feel "alive" but calm
+
+---
+
+🧩 STRUCTURE
+
+Add inside hero section:
+
+<div class="hero-bg-animation"></div>
+
+Position:
+
+* absolute
+* full width & height
+* behind content (z-index)
+
+---
+
+💡 ANIMATION IDEA (IMPLEMENT THIS)
+
+Create multiple thin lines using SVG or divs:
+
+* animate translateX or translateY slowly
+* animate opacity (pulse effect)
+* stagger delays for depth effect
+
+---
+
+🧠 MOBILE OPTIMIZATION
+
+* reduce animation complexity on screens <768px
+* reduce number of animated elements
+* disable heavy effects
+
+---
+
+⚡ OPTIONAL ENHANCEMENT
+
+Add slight gradient glow:
+background: radial-gradient(circle, rgba(153,247,255,0.08), transparent)
+
+---
+
+🚫 DO NOT
+
+* add video backgrounds
+* use framer-motion
+* use React
+* increase bundle size
+* change hero content
+
+---
+
+🎯 FINAL RESULT
+
+Hero should feel:
+
+* smooth
+* premium
+* futuristic
+* zero lag
+
+Like:
+ChatGPT / Perplexity level polish — NOT flashy, NOT heavy
+
+---
+
+Only modify hero background animation. Nothing else.
