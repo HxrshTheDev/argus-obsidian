@@ -1,34 +1,6 @@
 import { useState } from "react";
 import { Maximize2, Minimize2 } from "lucide-react";
 
-/* ─── Animated line data ─────────────────────────────────────────────────────
-   Pure CSS animation — only transform + opacity (GPU composited, zero repaint)
-   18 lines total: 11 horizontal drifts + 7 diagonal accents
-   ─────────────────────────────────────────────────────────────────────────── */
-const H_LINES = [
-  { top: "8%",  w: "35%", delay: "0s",    dur: "18s", color: "rgba(153,247,255,0.06)", left: "5%" },
-  { top: "15%", w: "20%", delay: "3s",    dur: "22s", color: "rgba(160,240,200,0.05)", left: "60%" },
-  { top: "23%", w: "45%", delay: "1.5s",  dur: "26s", color: "rgba(153,247,255,0.04)", left: "20%" },
-  { top: "34%", w: "28%", delay: "5s",    dur: "20s", color: "rgba(160,240,200,0.06)", left: "0%" },
-  { top: "42%", w: "15%", delay: "2s",    dur: "15s", color: "rgba(153,247,255,0.05)", left: "70%" },
-  { top: "55%", w: "38%", delay: "7s",    dur: "24s", color: "rgba(160,240,200,0.04)", left: "10%" },
-  { top: "63%", w: "22%", delay: "4s",    dur: "19s", color: "rgba(153,247,255,0.06)", left: "50%" },
-  { top: "74%", w: "50%", delay: "0.5s",  dur: "28s", color: "rgba(160,240,200,0.03)", left: "30%" },
-  { top: "82%", w: "18%", delay: "6s",    dur: "17s", color: "rgba(153,247,255,0.05)", left: "75%" },
-  { top: "90%", w: "32%", delay: "2.5s",  dur: "21s", color: "rgba(160,240,200,0.04)", left: "5%" },
-  { top: "48%", w: "12%", delay: "8s",    dur: "16s", color: "rgba(153,247,255,0.07)", left: "85%" },
-];
-
-const D_LINES = [
-  { top: "10%", left: "15%", dur: "30s", delay: "0s",   angle: "35deg",  color: "rgba(153,247,255,0.04)" },
-  { top: "20%", left: "70%", dur: "36s", delay: "4s",   angle: "-25deg", color: "rgba(160,240,200,0.05)" },
-  { top: "45%", left: "5%",  dur: "28s", delay: "2s",   angle: "20deg",  color: "rgba(153,247,255,0.03)" },
-  { top: "60%", left: "55%", dur: "32s", delay: "6s",   angle: "-40deg", color: "rgba(160,240,200,0.04)" },
-  { top: "75%", left: "30%", dur: "24s", delay: "1s",   angle: "30deg",  color: "rgba(153,247,255,0.05)" },
-  { top: "30%", left: "85%", dur: "38s", delay: "9s",   angle: "-15deg", color: "rgba(160,240,200,0.03)" },
-  { top: "85%", left: "80%", dur: "20s", delay: "3s",   angle: "45deg",  color: "rgba(153,247,255,0.04)" },
-];
-
 const HeroSection = ({
   onScrollToDemo,
   onScrollToFeatures,
@@ -45,7 +17,7 @@ const HeroSection = ({
         fullBleed ? "min-h-screen" : "py-32 lg:py-40"
       }`}
     >
-      {/* ── Height toggle ─────────────────────────────────────────────────── */}
+      {/* Height toggle */}
       <button
         onClick={() => setFullBleed(!fullBleed)}
         aria-label={fullBleed ? "Switch to fit-to-content" : "Switch to full-bleed"}
@@ -54,49 +26,32 @@ const HeroSection = ({
         {fullBleed ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
       </button>
 
-      {/* ── Animated background ───────────────────────────────────────────── */}
-      <div className="hero-bg-animation" aria-hidden="true">
+      {/* Single centered radial glow — one light source, intentional focal point */}
+      <div
+        className="absolute z-[2] pointer-events-none"
+        style={{
+          top: "10%",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "900px",
+          height: "600px",
+          background:
+            "radial-gradient(ellipse at center, rgba(153,247,255,0.07) 0%, rgba(160,240,200,0.04) 40%, transparent 70%)",
+        }}
+      />
 
-        {/* Central radial glow — single soft light source */}
-        <div className="hero-glow-core" />
+      {/* Subtle dot-grid texture */}
+      <div
+        className="absolute inset-0 z-[2] pointer-events-none"
+        style={{
+          opacity: 0.025,
+          backgroundImage:
+            "radial-gradient(circle, rgba(153,247,255,0.9) 1px, transparent 1px)",
+          backgroundSize: "48px 48px",
+        }}
+      />
 
-        {/* Horizontal drifting lines */}
-        {H_LINES.map((l, i) => (
-          <div
-            key={`h${i}`}
-            className="hero-line-h"
-            style={{
-              top: l.top,
-              left: l.left,
-              width: l.w,
-              background: l.color,
-              animationDuration: l.dur,
-              animationDelay: l.delay,
-            }}
-          />
-        ))}
-
-        {/* Diagonal accent lines */}
-        {D_LINES.map((l, i) => (
-          <div
-            key={`d${i}`}
-            className="hero-line-d"
-            style={{
-              top: l.top,
-              left: l.left,
-              background: l.color,
-              transform: `rotate(${l.angle})`,
-              animationDuration: l.dur,
-              animationDelay: l.delay,
-            }}
-          />
-        ))}
-
-        {/* Subtle dot-grid overlay */}
-        <div className="hero-dot-grid" />
-      </div>
-
-      {/* ── Hero content ──────────────────────────────────────────────────── */}
+      {/* Hero content */}
       <div className="relative z-10 flex flex-col items-center text-center mt-36 px-6 pb-24">
 
         {/* Badge */}
@@ -125,9 +80,7 @@ const HeroSection = ({
           </span>
         </div>
 
-        {/* Headline
-            — Off-white (#dff0f3) with a faint cyan tint reads warmer against #0e0e0e
-            — Gradient accent only on "data and AI." for focus                     */}
+        {/* Headline */}
         <h1
           className="leading-[1.04] tracking-[-0.03em] hero-fade-in"
           style={{
@@ -151,7 +104,7 @@ const HeroSection = ({
           </span>
         </h1>
 
-        {/* Subtext — cyan-grey tint, not pure white/grey */}
+        {/* Subtext */}
         <p
           className="mt-6 max-w-[520px] leading-relaxed hero-fade-in"
           style={{
@@ -183,7 +136,6 @@ const HeroSection = ({
           className="flex flex-col sm:flex-row items-center gap-3 mt-10 hero-fade-in"
           style={{ animationDelay: "0.6s" }}
         >
-          {/* Primary — cyan fill, matches nav CTA */}
           <a
             href="#demo"
             onClick={onScrollToDemo}
@@ -197,7 +149,6 @@ const HeroSection = ({
             Start Securing
           </a>
 
-          {/* Secondary — border-only, text tinted to match headline */}
           <a
             href="#features"
             onClick={onScrollToFeatures}
@@ -214,7 +165,7 @@ const HeroSection = ({
           </a>
         </div>
 
-        {/* Stats — tinted to match typography palette */}
+        {/* Stats */}
         <div
           className="flex flex-wrap justify-center gap-3 mt-14 hero-fade-in"
           style={{ animationDelay: "0.75s" }}
