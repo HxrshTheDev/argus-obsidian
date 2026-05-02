@@ -64,7 +64,7 @@ catalogs:
 importers:
 
   .:
-    devDependencies:
+    dependencies:
       cookie-parser:
         specifier: ^1.4.7
         version: 1.4.7
@@ -80,15 +80,16 @@ importers:
       pino-http:
         specifier: ^10.0.0
         version: 10.5.0
+      zod:
+        specifier: ^3.23.0
+        version: 3.25.76
+    devDependencies:
       prettier:
         specifier: ^3.8.1
         version: 3.8.1
       typescript:
         specifier: ~5.9.2
         version: 5.9.3
-      zod:
-        specifier: ^3.23.0
-        version: 3.25.76
 
   artifacts/api-server:
     dependencies:
