@@ -1,6 +1,33 @@
 import { useState } from "react";
 import { Maximize2, Minimize2 } from "lucide-react";
 
+/* Lines at opacity 0.18–0.28 — clearly visible on #0e0e0e,
+   not overwhelming. Glow passed as inline boxShadow so the
+   halo color actually matches the line instead of inheriting white. */
+const H_LINES = [
+  { top: "8%",  w: "32%", delay: "0s",   dur: "20s", rgb: "153,247,255", op: 0.22, left: "8%" },
+  { top: "16%", w: "18%", delay: "4s",   dur: "24s", rgb: "160,240,200", op: 0.18, left: "62%" },
+  { top: "25%", w: "42%", delay: "2s",   dur: "28s", rgb: "153,247,255", op: 0.16, left: "18%" },
+  { top: "36%", w: "26%", delay: "6s",   dur: "22s", rgb: "160,240,200", op: 0.20, left: "0%" },
+  { top: "44%", w: "14%", delay: "1s",   dur: "16s", rgb: "153,247,255", op: 0.18, left: "72%" },
+  { top: "54%", w: "36%", delay: "8s",   dur: "26s", rgb: "160,240,200", op: 0.16, left: "12%" },
+  { top: "65%", w: "20%", delay: "3s",   dur: "21s", rgb: "153,247,255", op: 0.22, left: "52%" },
+  { top: "76%", w: "48%", delay: "5s",   dur: "30s", rgb: "160,240,200", op: 0.14, left: "28%" },
+  { top: "84%", w: "16%", delay: "7s",   dur: "18s", rgb: "153,247,255", op: 0.20, left: "78%" },
+  { top: "91%", w: "30%", delay: "2.5s", dur: "23s", rgb: "160,240,200", op: 0.17, left: "4%" },
+  { top: "49%", w: "11%", delay: "9s",   dur: "17s", rgb: "153,247,255", op: 0.24, left: "87%" },
+];
+
+const D_LINES = [
+  { top: "12%", left: "14%", dur: "32s", delay: "0s",  angle: "32deg",  rgb: "153,247,255", op: 0.18 },
+  { top: "22%", left: "72%", dur: "38s", delay: "5s",  angle: "-28deg", rgb: "160,240,200", op: 0.20 },
+  { top: "47%", left: "4%",  dur: "28s", delay: "2s",  angle: "22deg",  rgb: "153,247,255", op: 0.15 },
+  { top: "62%", left: "56%", dur: "34s", delay: "7s",  angle: "-38deg", rgb: "160,240,200", op: 0.18 },
+  { top: "77%", left: "32%", dur: "26s", delay: "1s",  angle: "28deg",  rgb: "153,247,255", op: 0.20 },
+  { top: "32%", left: "86%", dur: "40s", delay: "10s", angle: "-18deg", rgb: "160,240,200", op: 0.15 },
+  { top: "87%", left: "82%", dur: "22s", delay: "4s",  angle: "42deg",  rgb: "153,247,255", op: 0.17 },
+];
+
 const HeroSection = ({
   onScrollToDemo,
   onScrollToFeatures,
@@ -26,32 +53,51 @@ const HeroSection = ({
         {fullBleed ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
       </button>
 
-      {/* Single centered radial glow — one light source, intentional focal point */}
-      <div
-        className="absolute z-[2] pointer-events-none"
-        style={{
-          top: "10%",
-          left: "50%",
-          transform: "translateX(-50%)",
-          width: "900px",
-          height: "600px",
-          background:
-            "radial-gradient(ellipse at center, rgba(153,247,255,0.07) 0%, rgba(160,240,200,0.04) 40%, transparent 70%)",
-        }}
-      />
+      {/* ── Background layer (z-[2], behind content at z-10) ─────────────── */}
+      <div className="absolute inset-0 z-[2] pointer-events-none overflow-hidden" aria-hidden="true">
 
-      {/* Subtle dot-grid texture */}
-      <div
-        className="absolute inset-0 z-[2] pointer-events-none"
-        style={{
-          opacity: 0.025,
-          backgroundImage:
-            "radial-gradient(circle, rgba(153,247,255,0.9) 1px, transparent 1px)",
-          backgroundSize: "48px 48px",
-        }}
-      />
+        {/* Central radial glow — breathes slowly */}
+        <div className="hero-glow-core" />
 
-      {/* Hero content */}
+        {/* Horizontal drifting lines */}
+        {H_LINES.map((l, i) => (
+          <div
+            key={`h${i}`}
+            className="hero-line-h"
+            style={{
+              top: l.top,
+              left: l.left,
+              width: l.w,
+              background: `rgba(${l.rgb},${l.op})`,
+              boxShadow: `0 0 8px 1px rgba(${l.rgb},${l.op * 0.6}), 0 0 20px 2px rgba(${l.rgb},${l.op * 0.3})`,
+              animationDuration: l.dur,
+              animationDelay: l.delay,
+            }}
+          />
+        ))}
+
+        {/* Diagonal accent lines */}
+        {D_LINES.map((l, i) => (
+          <div
+            key={`d${i}`}
+            className="hero-line-d"
+            style={{
+              top: l.top,
+              left: l.left,
+              background: `rgba(${l.rgb},${l.op})`,
+              boxShadow: `0 0 8px 1px rgba(${l.rgb},${l.op * 0.6}), 0 0 18px 2px rgba(${l.rgb},${l.op * 0.3})`,
+              transform: `rotate(${l.angle})`,
+              animationDuration: l.dur,
+              animationDelay: l.delay,
+            }}
+          />
+        ))}
+
+        {/* Dot-grid */}
+        <div className="hero-dot-grid" />
+      </div>
+
+      {/* ── Hero content ──────────────────────────────────────────────────── */}
       <div className="relative z-10 flex flex-col items-center text-center mt-36 px-6 pb-24">
 
         {/* Badge */}
@@ -171,35 +217,20 @@ const HeroSection = ({
           style={{ animationDelay: "0.75s" }}
         >
           {[
-            { label: "Accuracy",  value: "99.98%" },
-            { label: "Latency",   value: "0.42ms" },
-            { label: "Coverage",  value: "10 PII types" },
-            { label: "Mode",      value: "Client-Side" },
+            { label: "Accuracy", value: "99.98%" },
+            { label: "Latency",  value: "0.42ms" },
+            { label: "Coverage", value: "10 PII types" },
+            { label: "Mode",     value: "Client-Side" },
           ].map((stat) => (
             <div
               key={stat.label}
               className="flex items-center gap-2.5 px-4 py-2 rounded-full border border-white/[0.06] bg-white/[0.025]"
             >
-              <span
-                style={{
-                  fontFamily: "Space Grotesk, sans-serif",
-                  fontSize: "9px",
-                  color: "rgba(140,185,195,0.4)",
-                  letterSpacing: "0.2em",
-                  textTransform: "uppercase",
-                }}
-              >
+              <span style={{ fontFamily: "Space Grotesk, sans-serif", fontSize: "9px", color: "rgba(140,185,195,0.4)", letterSpacing: "0.2em", textTransform: "uppercase" }}>
                 {stat.label}
               </span>
               <span className="w-px h-2.5 bg-white/[0.08]" />
-              <span
-                style={{
-                  fontFamily: "Space Grotesk, sans-serif",
-                  fontSize: "11px",
-                  fontWeight: 700,
-                  color: "rgba(190,228,235,0.75)",
-                }}
-              >
+              <span style={{ fontFamily: "Space Grotesk, sans-serif", fontSize: "11px", fontWeight: 700, color: "rgba(190,228,235,0.75)" }}>
                 {stat.value}
               </span>
             </div>

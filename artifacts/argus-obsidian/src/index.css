@@ -103,6 +103,86 @@ textarea:focus {
 }
 
 /* ============================================
+   Hero Background Animation
+   Only transform + opacity — GPU composited, zero repaint
+   ============================================ */
+
+@keyframes heroDriftX {
+  0%   { transform: translateX(-90px); opacity: 0; }
+  8%   { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { transform: translateX(90px);  opacity: 0; }
+}
+
+@keyframes heroPulse {
+  0%, 100% { opacity: 0.3; }
+  50%       { opacity: 1;   }
+}
+
+@keyframes heroGlowBreathe {
+  0%, 100% { opacity: 0.7;  transform: translateX(-50%) scale(1);    }
+  50%       { opacity: 1;   transform: translateX(-50%) scale(1.1); }
+}
+
+/* Central soft glow */
+.hero-glow-core {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(960px, 130vw);
+  height: 620px;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(153,247,255,0.13) 0%,
+    rgba(160,240,200,0.07) 38%,
+    transparent 68%
+  );
+  will-change: transform, opacity;
+  animation: heroGlowBreathe 11s ease-in-out infinite;
+}
+
+/* Horizontal drifting lines */
+.hero-line-h {
+  position: absolute;
+  height: 1px;
+  border-radius: 9999px;
+  will-change: transform, opacity;
+  animation: heroDriftX linear infinite;
+}
+
+/* Diagonal accent lines */
+.hero-line-d {
+  position: absolute;
+  width: 190px;
+  height: 1px;
+  border-radius: 9999px;
+  will-change: opacity;
+  animation: heroPulse ease-in-out infinite;
+}
+
+/* Dot grid */
+.hero-dot-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image: radial-gradient(circle, rgba(153,247,255,0.9) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Mobile — drop diagonals, slow glow */
+@media (max-width: 767px) {
+  .hero-line-d { display: none; }
+  .hero-glow-core { animation-duration: 18s; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-line-h,
+  .hero-line-d,
+  .hero-glow-core { animation: none !important; }
+}
+
+/* ============================================
    Hero Title - Letter Reveal Animation
    ============================================ */
 
