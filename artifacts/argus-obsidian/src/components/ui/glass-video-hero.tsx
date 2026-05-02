@@ -1,6 +1,43 @@
 import { useState } from "react";
 import { Maximize2, Minimize2 } from "lucide-react";
 
+/* ─── Beam data (generated once, never changes) ──────────────────────────
+   16 pulse beams + 8 drift beams = 24 total.
+   Only transform + opacity animated — fully GPU-composited.
+   ─────────────────────────────────────────────────────────────────────── */
+
+// 16 static beams that breathe in/out
+const PULSE_BEAMS = [
+  { left: "4%",   color: "rgba(153,247,255,0.18)", dur: "9s",  delay: "0s"    },
+  { left: "9%",   color: "rgba(172,137,255,0.12)", dur: "13s", delay: "-4s"   },
+  { left: "15%",  color: "rgba(153,247,255,0.14)", dur: "11s", delay: "-2s"   },
+  { left: "21%",  color: "rgba(172,137,255,0.10)", dur: "15s", delay: "-7s"   },
+  { left: "28%",  color: "rgba(153,247,255,0.16)", dur: "10s", delay: "-1s"   },
+  { left: "35%",  color: "rgba(172,137,255,0.14)", dur: "12s", delay: "-5s"   },
+  { left: "42%",  color: "rgba(153,247,255,0.20)", dur: "8s",  delay: "-3s"   },
+  { left: "49%",  color: "rgba(172,137,255,0.12)", dur: "14s", delay: "-9s"   },
+  { left: "56%",  color: "rgba(153,247,255,0.15)", dur: "11s", delay: "-6s"   },
+  { left: "63%",  color: "rgba(172,137,255,0.18)", dur: "9s",  delay: "-2s"   },
+  { left: "70%",  color: "rgba(153,247,255,0.12)", dur: "16s", delay: "-8s"   },
+  { left: "76%",  color: "rgba(172,137,255,0.14)", dur: "10s", delay: "-4s"   },
+  { left: "82%",  color: "rgba(153,247,255,0.16)", dur: "13s", delay: "-1s"   },
+  { left: "87%",  color: "rgba(172,137,255,0.10)", dur: "12s", delay: "-5s"   },
+  { left: "92%",  color: "rgba(153,247,255,0.14)", dur: "11s", delay: "-3s"   },
+  { left: "97%",  color: "rgba(172,137,255,0.16)", dur: "9s",  delay: "-7s"   },
+];
+
+// 8 drifting beams — slightly wider, slowly translate
+const DRIFT_BEAMS = [
+  { left: "6%",   color: "rgba(153,247,255,0.22)", dur: "18s", delay: "0s"    },
+  { left: "18%",  color: "rgba(172,137,255,0.18)", dur: "22s", delay: "-6s"   },
+  { left: "31%",  color: "rgba(153,247,255,0.18)", dur: "20s", delay: "-3s"   },
+  { left: "45%",  color: "rgba(172,137,255,0.22)", dur: "25s", delay: "-10s"  },
+  { left: "58%",  color: "rgba(153,247,255,0.20)", dur: "19s", delay: "-7s"   },
+  { left: "71%",  color: "rgba(172,137,255,0.18)", dur: "23s", delay: "-2s"   },
+  { left: "84%",  color: "rgba(153,247,255,0.22)", dur: "21s", delay: "-12s"  },
+  { left: "94%",  color: "rgba(172,137,255,0.16)", dur: "17s", delay: "-4s"   },
+];
+
 const HeroSection = ({
   onScrollToDemo,
   onScrollToFeatures,
@@ -26,21 +63,69 @@ const HeroSection = ({
         {fullBleed ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
       </button>
 
-      {/* Single centered radial glow */}
-      <div
-        className="absolute z-[2] pointer-events-none"
-        style={{
-          top: "10%",
-          left: "50%",
-          transform: "translateX(-50%)",
-          width: "900px",
-          height: "600px",
-          background:
-            "radial-gradient(ellipse at center, rgba(153,247,255,0.07) 0%, rgba(160,240,200,0.04) 40%, transparent 70%)",
-        }}
-      />
+      {/* ── Background animation ─────────────────────────────────────────── */}
+      <div className="hero-bg-animation" aria-hidden="true">
 
-      {/* Hero content */}
+        {/* Centered radial glow — breathes slowly */}
+        <div
+          className="hero-glow"
+          style={{
+            top: "0%",
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "860px",
+            height: "560px",
+            background: "radial-gradient(ellipse at center, rgba(153,247,255,0.07) 0%, rgba(172,137,255,0.04) 45%, transparent 70%)",
+            animationDuration: "7s",
+            animationDelay: "0s",
+          }}
+        />
+
+        {/* Secondary off-center glow */}
+        <div
+          className="hero-glow"
+          style={{
+            top: "20%",
+            left: "30%",
+            width: "500px",
+            height: "360px",
+            background: "radial-gradient(ellipse at center, rgba(172,137,255,0.05) 0%, transparent 70%)",
+            animationDuration: "11s",
+            animationDelay: "-4s",
+          }}
+        />
+
+        {/* Pulse beams */}
+        {PULSE_BEAMS.map((b, i) => (
+          <div
+            key={`p${i}`}
+            className="hero-beam hero-beam--pulse"
+            style={{
+              left: b.left,
+              background: `linear-gradient(to bottom, transparent 0%, ${b.color} 35%, ${b.color} 65%, transparent 100%)`,
+              animationDuration: b.dur,
+              animationDelay: b.delay,
+            }}
+          />
+        ))}
+
+        {/* Drift beams — slightly wider for prominence */}
+        {DRIFT_BEAMS.map((b, i) => (
+          <div
+            key={`d${i}`}
+            className="hero-beam hero-beam--drift"
+            style={{
+              left: b.left,
+              width: "1.5px",
+              background: `linear-gradient(to bottom, transparent 0%, ${b.color} 30%, ${b.color} 70%, transparent 100%)`,
+              animationDuration: b.dur,
+              animationDelay: b.delay,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* ── Hero content ────────────────────────────────────────────────── */}
       <div className="relative z-10 flex flex-col items-center text-center mt-36 px-6 pb-24">
 
         {/* Badge */}

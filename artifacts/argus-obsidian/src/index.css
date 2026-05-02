@@ -103,6 +103,78 @@ textarea:focus {
 }
 
 /* ============================================
+   Hero Background Animation
+   GPU-composited: transform + opacity ONLY.
+   No filter, no blur, no paint triggers.
+   ============================================ */
+
+/* Slow opacity pulse — static beams that breathe */
+@keyframes beamPulse {
+  0%   { opacity: 0;    }
+  40%  { opacity: 1;    }
+  60%  { opacity: 1;    }
+  100% { opacity: 0;    }
+}
+
+/* Slow diagonal drift — beams that gently slide */
+@keyframes beamDrift {
+  0%   { transform: skewX(-22deg) translateX(0px);   opacity: 0;   }
+  12%  { opacity: 1;                                               }
+  88%  { opacity: 0.7;                                             }
+  100% { transform: skewX(-22deg) translateX(18px);  opacity: 0;   }
+}
+
+/* Radial glow breathe */
+@keyframes glowBreathe {
+  0%   { opacity: 0.6; transform: scale(1);    }
+  50%  { opacity: 1;   transform: scale(1.04); }
+  100% { opacity: 0.6; transform: scale(1);    }
+}
+
+.hero-bg-animation {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-beam {
+  position: absolute;
+  top: -30%;
+  width: 1px;
+  height: 160%;
+  will-change: transform, opacity;
+}
+
+.hero-beam--pulse {
+  transform: skewX(-22deg);
+  animation: beamPulse linear infinite;
+}
+
+.hero-beam--drift {
+  animation: beamDrift linear infinite;
+}
+
+.hero-glow {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform, opacity;
+  animation: glowBreathe ease-in-out infinite;
+}
+
+/* Mobile: hide every other beam, keep 12 */
+@media (max-width: 767px) {
+  .hero-beam:nth-child(even) { display: none; }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .hero-beam,
+  .hero-glow { animation: none !important; opacity: 0.3; }
+}
+
+/* ============================================
    Hero Title - Letter Reveal Animation
    ============================================ */
 
