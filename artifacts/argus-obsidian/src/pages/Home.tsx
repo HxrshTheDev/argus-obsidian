@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react";
+import { HeroSection } from "@/components/ui/glass-video-hero";
 
 function generateFloatingPathsSVG(position: number): string {
   let paths = "";
@@ -90,8 +91,6 @@ function applyMasking(text: string): MaskResult {
 }
 
 export default function Home() {
-  const pos1Ref = useRef<HTMLDivElement>(null);
-  const pos2Ref = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const [detectionText, setDetectionText] = useState("SCANNER_ACTIVE_STANDBY");
@@ -106,14 +105,6 @@ export default function Home() {
   const [copied, setCopied] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  useEffect(() => {
-    if (pos1Ref.current) {
-      pos1Ref.current.innerHTML = generateFloatingPathsSVG(1);
-    }
-    if (pos2Ref.current) {
-      pos2Ref.current.innerHTML = generateFloatingPathsSVG(-1);
-    }
-  }, []);
 
   const handleInput = useCallback(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -223,59 +214,10 @@ export default function Home() {
       </nav>
 
       <main>
-        {/* Hero Section */}
-        <section
-          id="hero"
-          className="relative min-h-screen flex items-center justify-center overflow-hidden hero-gradient px-6 pt-20"
-        >
-          <div ref={pos1Ref} className="absolute inset-0 pointer-events-none" />
-          <div ref={pos2Ref} className="absolute inset-0 pointer-events-none" />
-
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div className="absolute top-1/4 -left-20 w-96 h-96 bg-[#99f7ff]/20 blur-[64px] rounded-full" />
-            <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-[#ac89ff]/20 blur-[64px] rounded-full" />
-          </div>
-
-          <div className="relative z-10 text-center max-w-5xl">
-            <HeroTitle />
-            <p
-              className="text-xl md:text-2xl text-white/80 mb-4 max-w-3xl mx-auto hero-fade-in"
-              style={{ animationDelay: "0.6s", fontFamily: "Inter, sans-serif" }}
-            >
-              The invisible layer between your data and AI.
-            </p>
-            <p
-              className="text-sm md:text-base text-white/40 uppercase tracking-[0.3em] mb-12 hero-fade-in"
-              style={{ animationDelay: "0.8s", fontFamily: "Space Grotesk, sans-serif" }}
-            >
-              Prevent data exposure. Stay private. Stay in control.
-            </p>
-            <div
-              className="flex flex-col md:flex-row gap-6 justify-center items-center hero-fade-in"
-              style={{ animationDelay: "1s" }}
-            >
-              <a
-                href="#demo"
-                onClick={scrollTo("demo")}
-                className="bg-[#99f7ff] text-[#00555a] px-10 py-5 rounded-full font-bold text-lg glow-primary-strong transition-all hover:scale-105 active:scale-95 inline-block"
-                style={{ fontFamily: "Manrope, sans-serif" }}
-              >
-                Start Securing
-              </a>
-              <div className="inline-block group relative bg-gradient-to-b from-white/10 to-black/10 p-px rounded-2xl backdrop-blur-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <a
-                  href="#features"
-                  onClick={scrollTo("features")}
-                  className="rounded-[1.15rem] px-8 py-5 text-lg font-semibold backdrop-blur-md bg-black/95 hover:bg-black/100 text-white transition-all duration-300 group-hover:-translate-y-0.5 border border-white/10 hover:shadow-md hover:shadow-neutral-800/50 inline-block"
-                  style={{ fontFamily: "Manrope, sans-serif" }}
-                >
-                  <span className="opacity-90 group-hover:opacity-100 transition-opacity">See How It Works</span>
-                  <span className="ml-3 opacity-70 group-hover:opacity-100 group-hover:translate-x-1.5 transition-all duration-300 inline-block">→</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
+        <HeroSection
+          onScrollToDemo={scrollTo("demo")}
+          onScrollToFeatures={scrollTo("features")}
+        />
 
         {/* Features Section */}
         <section id="features" className="py-32 px-6 max-w-7xl mx-auto">

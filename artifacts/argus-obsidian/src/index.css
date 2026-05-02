@@ -106,6 +106,13 @@ textarea:focus {
    Background Paths - Floating SVG Animation
    ============================================ */
 
+@keyframes scanSweep {
+  0%   { top: -2px; opacity: 0; }
+  5%   { opacity: 1; }
+  95%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
 @keyframes floatingPath {
   0% {
     stroke-dashoffset: 2000;
