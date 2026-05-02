@@ -36,7 +36,7 @@ const HeroSection = ({
         muted
         playsInline
         className="absolute inset-0 w-full h-full object-cover z-0"
-        style={{ filter: "hue-rotate(140deg) saturate(1.2) brightness(0.75)" }}
+        style={{ filter: "hue-rotate(210deg) saturate(1.3) brightness(0.75)" }}
       >
         <source src={VIDEO_URL} type="video/mp4" />
       </video>
@@ -45,7 +45,7 @@ const HeroSection = ({
       <div
         className="absolute inset-0 z-[1] pointer-events-none"
         style={{
-          background: "linear-gradient(135deg, rgba(0,80,60,0.4) 0%, rgba(20,120,90,0.25) 50%, rgba(0,70,55,0.4) 100%)",
+          background: "linear-gradient(135deg, rgba(0,30,100,0.4) 0%, rgba(10,60,160,0.25) 50%, rgba(0,20,80,0.4) 100%)",
           mixBlendMode: "color",
         }}
       />
