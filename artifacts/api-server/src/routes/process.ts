@@ -1,7 +1,7 @@
-import { Router, type IRouter } from "express";
+import { Router } from "express";
 import { z } from "zod";
 
-const router: IRouter = Router();
+const router = Router();
 
 const InputSchema = z.object({ text: z.string() });
 
@@ -26,7 +26,7 @@ interface MatchEntry {
   index: number;
 }
 
-router.post("/process", (req, res) => {
+router.post("/process", (req: any, res: any) => {
   const parsed = InputSchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: "Invalid input" });
