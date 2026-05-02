@@ -36,7 +36,7 @@ const HeroSection = ({
         muted
         playsInline
         className="absolute inset-0 w-full h-full object-cover z-0"
-        style={{ filter: "hue-rotate(210deg) saturate(1.3) brightness(0.75)" }}
+        style={{ filter: "brightness(0.75)" }}
       >
         <source src={VIDEO_URL} type="video/mp4" />
       </video>
