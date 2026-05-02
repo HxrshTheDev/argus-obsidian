@@ -16,84 +16,104 @@ const HeroSection = ({
   return (
     <section
       id="hero"
-      className={`relative w-full overflow-hidden transition-all duration-500 ease-in-out ${
+      className={`relative w-full overflow-hidden transition-all duration-500 ease-in-out bg-[#0e0e0e] ${
         fullBleed ? "min-h-screen" : "py-32 lg:py-40"
       }`}
     >
-      {/* Height toggle */}
+      {/* Height toggle — matches nav/card glass treatment */}
       <button
         onClick={() => setFullBleed(!fullBleed)}
         aria-label={fullBleed ? "Switch to fit-to-content" : "Switch to full-bleed"}
-        className="absolute top-24 right-4 z-20 p-2.5 rounded-[10px] backdrop-blur-xl border border-[rgba(153,247,255,0.3)] bg-[rgba(0,30,40,0.5)] text-white hover:bg-[rgba(0,50,60,0.6)] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#99f7ff]"
+        className="absolute top-24 right-5 z-20 p-2 rounded-lg border border-white/10 bg-white/5 text-white/50 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all focus:outline-none"
       >
-        {fullBleed ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+        {fullBleed ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
       </button>
 
-      {/* Video background */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover z-0"
-      >
-        <source src={VIDEO_URL} type="video/mp4" />
-      </video>
+      {/* Base fill — exact match to page bg */}
+      <div className="absolute inset-0 z-[1] bg-[#0e0e0e]" />
 
-      {/* Dark overlay — keeps ARGUS aesthetic over any video */}
-      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-[#0e0e0e]/80 via-[#0e0e0e]/60 to-[#0e0e0e]/90" />
+      {/* Single centered radial glow — one light source, intentional focal point */}
+      <div
+        className="absolute z-[2] pointer-events-none"
+        style={{
+          top: "10%",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "900px",
+          height: "600px",
+          background:
+            "radial-gradient(ellipse at center, rgba(153,247,255,0.07) 0%, rgba(172,137,255,0.04) 40%, transparent 70%)",
+          filter: "blur(1px)",
+        }}
+      />
 
-      {/* Ambient glow orbs */}
-      <div className="absolute inset-0 z-[2] pointer-events-none overflow-hidden">
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-[#99f7ff]/15 blur-[80px] rounded-full" />
-        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-[#ac89ff]/15 blur-[80px] rounded-full" />
-      </div>
-
+      {/* Subtle noise/grid texture */}
+      <div
+        className="absolute inset-0 z-[2] pointer-events-none opacity-[0.025]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+          backgroundSize: "64px 64px",
+        }}
+      />
 
       {/* Hero content */}
-      <div className="relative z-10 flex flex-col items-center text-center mt-36 px-6 pb-20">
-        {/* Pill badge */}
-        <div className="inline-flex items-center gap-2.5 h-[38px] px-3.5 rounded-[10px] backdrop-blur-xl border border-[rgba(153,247,255,0.3)] bg-[rgba(0,30,40,0.5)] shadow-[0_0_20px_rgba(153,247,255,0.1),inset_0_1px_0_rgba(255,255,255,0.06)] mb-8">
+      <div className="relative z-10 flex flex-col items-center text-center mt-36 px-6 pb-24">
+
+        {/* Badge — same surface treatment as nav and cards */}
+        <div
+          className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-lg border border-white/10 bg-white/[0.04] mb-10 hero-fade-in"
+          style={{ animationDelay: "0.1s" }}
+        >
           <span
-            className="font-bold text-xs px-2.5 py-1 rounded-[6px] shadow-[0_0_8px_rgba(153,247,255,0.3)]"
+            className="text-[10px] font-black px-2 py-0.5 rounded tracking-widest uppercase"
             style={{
               background: "#99f7ff",
-              color: "#003a40",
+              color: "#003538",
               fontFamily: "Space Grotesk, sans-serif",
             }}
           >
             Beta
           </span>
           <span
-            className="text-sm text-white/80 tracking-wide"
+            className="text-xs text-white/50 tracking-widest uppercase"
             style={{ fontFamily: "Space Grotesk, sans-serif" }}
           >
-            ARGUS OBSIDIAN — Privacy-First AI Middleware
+            Privacy-First AI Middleware
           </span>
         </div>
 
-        {/* Headline */}
+        {/* Headline — clean white hierarchy, gradient only on accent phrase */}
         <h1
-          className="text-white text-5xl lg:text-[88px] leading-[1.05] tracking-[-0.02em] mt-2 max-w-5xl hero-fade-in"
-          style={{ fontFamily: "Manrope, sans-serif", animationDelay: "0.3s" }}
+          className="text-white leading-[1.04] tracking-[-0.03em] hero-fade-in"
+          style={{
+            fontFamily: "Manrope, sans-serif",
+            fontSize: "clamp(2.8rem, 7vw, 6rem)",
+            fontWeight: 800,
+            animationDelay: "0.25s",
+          }}
         >
           The invisible layer
-          <br className="hidden lg:block" />
+          <br />
           between your{" "}
           <span
             className="text-transparent bg-clip-text"
             style={{
-              backgroundImage: "linear-gradient(135deg, #99f7ff 0%, #ac89ff 100%)",
+              backgroundImage: "linear-gradient(135deg, #99f7ff 20%, #ac89ff 80%)",
             }}
           >
             data and AI.
           </span>
         </h1>
 
-        {/* Subtext */}
+        {/* Subtext — same opacity as page body copy */}
         <p
-          className="text-lg text-white/50 mt-6 max-w-[620px] leading-relaxed hero-fade-in"
-          style={{ fontFamily: "Inter, sans-serif", animationDelay: "0.55s" }}
+          className="text-white/40 mt-6 max-w-[540px] leading-relaxed hero-fade-in"
+          style={{
+            fontFamily: "Inter, sans-serif",
+            fontSize: "1rem",
+            animationDelay: "0.4s",
+          }}
         >
           Detect sensitive PII in real time, replace it with synthetic tokens,
           and restore the original after your AI responds — 100% client-side,
@@ -102,61 +122,55 @@ const HeroSection = ({
 
         {/* Trust line */}
         <p
-          className="text-xs text-white/30 uppercase tracking-[0.3em] mt-4 hero-fade-in"
-          style={{ fontFamily: "Space Grotesk, sans-serif", animationDelay: "0.7s" }}
+          className="text-[11px] text-white/20 uppercase tracking-[0.3em] mt-4 hero-fade-in"
+          style={{ fontFamily: "Space Grotesk, sans-serif", animationDelay: "0.5s" }}
         >
-          Prevent data exposure. Stay private. Stay in control.
+          Prevent data exposure · Stay private · Stay in control
         </p>
 
-        {/* CTA buttons */}
+        {/* CTAs — primary matches nav CTA exactly, secondary uses border-only glass */}
         <div
-          className="flex flex-col sm:flex-row items-center gap-4 mt-10 hero-fade-in"
-          style={{ animationDelay: "0.85s" }}
+          className="flex flex-col sm:flex-row items-center gap-3 mt-10 hero-fade-in"
+          style={{ animationDelay: "0.6s" }}
         >
           <a
             href="#demo"
             onClick={onScrollToDemo}
-            className="px-10 py-4 rounded-full font-bold text-base tracking-tight transition-all hover:scale-105 active:scale-95 glow-primary-strong inline-block"
+            className="px-8 py-3 rounded-full font-bold text-sm tracking-tight transition-all hover:scale-105 active:scale-95 glow-primary inline-block"
             style={{
               fontFamily: "Manrope, sans-serif",
               background: "#99f7ff",
-              color: "#00555a",
+              color: "#005f64",
             }}
           >
             Start Securing
           </a>
 
-          <div className="inline-block group relative bg-gradient-to-b from-white/10 to-black/10 p-px rounded-2xl backdrop-blur-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <a
-              href="#features"
-              onClick={onScrollToFeatures}
-              className="rounded-[1.15rem] px-8 py-4 text-base font-semibold backdrop-blur-md bg-black/80 hover:bg-black/95 text-white transition-all duration-300 group-hover:-translate-y-0.5 border border-white/10 hover:shadow-md hover:shadow-neutral-800/50 inline-block"
-              style={{ fontFamily: "Manrope, sans-serif" }}
-            >
-              <span className="opacity-90 group-hover:opacity-100 transition-opacity">
-                See How It Works
-              </span>
-              <span className="ml-3 opacity-70 group-hover:opacity-100 group-hover:translate-x-1.5 transition-all duration-300 inline-block">
-                →
-              </span>
-            </a>
-          </div>
+          <a
+            href="#features"
+            onClick={onScrollToFeatures}
+            className="px-8 py-3 rounded-full font-semibold text-sm text-white/60 border border-white/10 hover:border-white/20 hover:text-white transition-all duration-300 inline-block"
+            style={{ fontFamily: "Manrope, sans-serif" }}
+          >
+            See How It Works
+            <span className="ml-2 opacity-60 group-hover:translate-x-1 transition-transform inline-block">→</span>
+          </a>
         </div>
 
-        {/* Stat pills */}
+        {/* Stats — same border/bg token as badge and cards, no teal tint */}
         <div
-          className="flex flex-wrap justify-center gap-4 mt-12 hero-fade-in"
-          style={{ animationDelay: "1s" }}
+          className="flex flex-wrap justify-center gap-3 mt-14 hero-fade-in"
+          style={{ animationDelay: "0.75s" }}
         >
           {[
-            { label: "Threat Index", value: "99.98%" },
-            { label: "Latency", value: "0.42ms" },
             { label: "Accuracy", value: "99.98%" },
-            { label: "Status", value: "PROTECTION ACTIVE" },
+            { label: "Latency", value: "0.42ms" },
+            { label: "Coverage", value: "10 PII types" },
+            { label: "Mode", value: "100% Client-Side" },
           ].map((stat) => (
             <div
               key={stat.label}
-              className="flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-xl border border-[rgba(153,247,255,0.15)] bg-[rgba(0,20,30,0.5)]"
+              className="flex items-center gap-2.5 px-4 py-2 rounded-full border border-white/[0.08] bg-white/[0.03]"
             >
               <span
                 className="text-[10px] text-white/30 uppercase tracking-widest"
@@ -165,7 +179,10 @@ const HeroSection = ({
                 {stat.label}
               </span>
               <span
-                className="text-xs font-bold text-[#99f7ff]"
+                className="w-px h-3 bg-white/10"
+              />
+              <span
+                className="text-[11px] font-bold text-white/70"
                 style={{ fontFamily: "Space Grotesk, sans-serif" }}
               >
                 {stat.value}
@@ -173,6 +190,7 @@ const HeroSection = ({
             </div>
           ))}
         </div>
+
       </div>
     </section>
   );
