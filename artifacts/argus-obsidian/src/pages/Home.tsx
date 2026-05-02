@@ -228,7 +228,7 @@ export default function Home() {
                 icon: "radar",
                 title: "Detect",
                 color: "#99f7ff",
-                glowColor: "blue",
+                glowColor: "lightblue",
                 borderHover: "hover:border-[#99f7ff]/30",
                 text: "Real-time heuristic scanning identifies sensitive PII and trade secrets before they ever reach the Large Language Model.",
               },
@@ -236,7 +236,7 @@ export default function Home() {
                 icon: "visibility_off",
                 title: "Mask",
                 color: "#ac89ff",
-                glowColor: "purple",
+                glowColor: "lightblue",
                 borderHover: "hover:border-[#ac89ff]/30",
                 text: "Autonomous synthetic data replacement ensures LLM functionality remains intact while keeping your actual values hidden.",
               },
@@ -244,7 +244,7 @@ export default function Home() {
                 icon: "sync_alt",
                 title: "Restore",
                 color: "#00f1fe",
-                glowColor: "blue",
+                glowColor: "lightblue",
                 borderHover: "hover:border-[#00f1fe]/30",
                 text: "Seamless reverse-remapping decodes AI responses back to your local environment with absolute precision.",
               },
@@ -384,7 +384,7 @@ export default function Home() {
             </div>
 
             {/* Stats + Button */}
-            <div className="flex flex-col md:flex-row gap-8 items-center justify-between p-8 glass-card rounded-2xl border-white/5 shadow-none hover:border-cyan-400/20 transition-colors">
+            <GlowCard glowColor="lightblue" customSize className="flex flex-col md:flex-row gap-8 items-center justify-between p-8 w-full">
               <div className="flex flex-wrap gap-10">
                 {[
                   { label: "LATENCY", value: "0.42ms" },
@@ -407,7 +407,7 @@ export default function Home() {
               >
                 {isLoading ? "PROCESSING..." : "Intercept & Secure"}
               </button>
-            </div>
+            </GlowCard>
           </div>
         </section>
 
