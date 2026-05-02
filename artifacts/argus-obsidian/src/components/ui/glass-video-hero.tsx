@@ -49,14 +49,6 @@ const HeroSection = ({
         <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-[#ac89ff]/15 blur-[80px] rounded-full" />
       </div>
 
-      {/* Scanline sweep */}
-      <div
-        className="absolute inset-x-0 h-px z-[3] pointer-events-none"
-        style={{
-          background: "linear-gradient(90deg, transparent, rgba(153,247,255,0.4), transparent)",
-          animation: "scanSweep 6s linear 3s infinite",
-        }}
-      />
 
       {/* Hero content */}
       <div className="relative z-10 flex flex-col items-center text-center mt-36 px-6 pb-20">
