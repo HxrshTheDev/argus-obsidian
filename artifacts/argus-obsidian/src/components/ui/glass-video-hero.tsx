@@ -7,25 +7,25 @@ import { Maximize2, Minimize2 } from "lucide-react";
    ─────────────────────────────────────────────────────────────────────────── */
 const H_LINES = [
   { top: "8%",  w: "35%", delay: "0s",    dur: "18s", color: "rgba(153,247,255,0.06)", left: "5%" },
-  { top: "15%", w: "20%", delay: "3s",    dur: "22s", color: "rgba(172,137,255,0.05)", left: "60%" },
+  { top: "15%", w: "20%", delay: "3s",    dur: "22s", color: "rgba(160,240,200,0.05)", left: "60%" },
   { top: "23%", w: "45%", delay: "1.5s",  dur: "26s", color: "rgba(153,247,255,0.04)", left: "20%" },
-  { top: "34%", w: "28%", delay: "5s",    dur: "20s", color: "rgba(172,137,255,0.06)", left: "0%" },
+  { top: "34%", w: "28%", delay: "5s",    dur: "20s", color: "rgba(160,240,200,0.06)", left: "0%" },
   { top: "42%", w: "15%", delay: "2s",    dur: "15s", color: "rgba(153,247,255,0.05)", left: "70%" },
-  { top: "55%", w: "38%", delay: "7s",    dur: "24s", color: "rgba(172,137,255,0.04)", left: "10%" },
+  { top: "55%", w: "38%", delay: "7s",    dur: "24s", color: "rgba(160,240,200,0.04)", left: "10%" },
   { top: "63%", w: "22%", delay: "4s",    dur: "19s", color: "rgba(153,247,255,0.06)", left: "50%" },
-  { top: "74%", w: "50%", delay: "0.5s",  dur: "28s", color: "rgba(172,137,255,0.03)", left: "30%" },
+  { top: "74%", w: "50%", delay: "0.5s",  dur: "28s", color: "rgba(160,240,200,0.03)", left: "30%" },
   { top: "82%", w: "18%", delay: "6s",    dur: "17s", color: "rgba(153,247,255,0.05)", left: "75%" },
-  { top: "90%", w: "32%", delay: "2.5s",  dur: "21s", color: "rgba(172,137,255,0.04)", left: "5%" },
+  { top: "90%", w: "32%", delay: "2.5s",  dur: "21s", color: "rgba(160,240,200,0.04)", left: "5%" },
   { top: "48%", w: "12%", delay: "8s",    dur: "16s", color: "rgba(153,247,255,0.07)", left: "85%" },
 ];
 
 const D_LINES = [
   { top: "10%", left: "15%", dur: "30s", delay: "0s",   angle: "35deg",  color: "rgba(153,247,255,0.04)" },
-  { top: "20%", left: "70%", dur: "36s", delay: "4s",   angle: "-25deg", color: "rgba(172,137,255,0.05)" },
+  { top: "20%", left: "70%", dur: "36s", delay: "4s",   angle: "-25deg", color: "rgba(160,240,200,0.05)" },
   { top: "45%", left: "5%",  dur: "28s", delay: "2s",   angle: "20deg",  color: "rgba(153,247,255,0.03)" },
-  { top: "60%", left: "55%", dur: "32s", delay: "6s",   angle: "-40deg", color: "rgba(172,137,255,0.04)" },
+  { top: "60%", left: "55%", dur: "32s", delay: "6s",   angle: "-40deg", color: "rgba(160,240,200,0.04)" },
   { top: "75%", left: "30%", dur: "24s", delay: "1s",   angle: "30deg",  color: "rgba(153,247,255,0.05)" },
-  { top: "30%", left: "85%", dur: "38s", delay: "9s",   angle: "-15deg", color: "rgba(172,137,255,0.03)" },
+  { top: "30%", left: "85%", dur: "38s", delay: "9s",   angle: "-15deg", color: "rgba(160,240,200,0.03)" },
   { top: "85%", left: "80%", dur: "20s", delay: "3s",   angle: "45deg",  color: "rgba(153,247,255,0.04)" },
 ];
 

@@ -155,7 +155,7 @@ textarea:focus {
   background: radial-gradient(
     ellipse at center,
     rgba(153, 247, 255, 0.08) 0%,
-    rgba(172, 137, 255, 0.05) 38%,
+    rgba(160, 240, 200, 0.05) 38%,
     transparent 68%
   );
   will-change: transform, opacity;
