@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "ARGUS OBSIDIAN"
+version = "1.0.0"
+id = "artifacts/argus-obsidian"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22879
+
+[services.development]
+run = "pnpm --filter @workspace/argus-obsidian run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/argus-obsidian", "run", "build" ]
+publicDir = "artifacts/argus-obsidian/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22879"
+BASE_PATH = "/"
