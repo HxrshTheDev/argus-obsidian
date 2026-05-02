@@ -275,113 +275,115 @@ export default function Home() {
         </section>
 
         {/* Demo Section */}
-        <section id="demo" className="py-32 px-6 bg-[#050505] relative overflow-hidden">
-          <div className="scanline" />
+        <section id="demo" className="py-32 px-6 bg-[#0e0e0e] relative overflow-hidden">
           <div className="max-w-7xl mx-auto relative z-20">
+            {/* Section header — matches Features/Trust pattern */}
             <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-8">
               <div>
+                {/* Status badge — same pill style as hero */}
                 <div
-                  className={`inline-flex items-center px-3 py-1 rounded mb-6 border text-[10px] font-bold tracking-[0.3em] transition-all duration-400 ${
+                  className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg border mb-8 text-[10px] font-bold tracking-[0.25em] uppercase transition-all duration-400 ${
                     isSafeMode
                       ? "bg-emerald-400/10 text-emerald-400 border-emerald-400/20"
-                      : "bg-cyan-400/10 text-cyan-400 border-cyan-400/20"
+                      : "bg-[#99f7ff]/10 text-[#99f7ff] border-[#99f7ff]/20"
                   }`}
+                  style={{ fontFamily: "Space Grotesk, sans-serif" }}
                 >
                   <span
-                    className={`w-1.5 h-1.5 rounded-full mr-2 shadow-[0_0_8px_currentColor] ${
-                      isSafeMode ? "bg-emerald-400 animate-pulse" : "bg-cyan-400"
+                    className={`w-1.5 h-1.5 rounded-full shadow-[0_0_8px_currentColor] ${
+                      isSafeMode ? "bg-emerald-400 animate-pulse" : "bg-[#99f7ff]"
                     }`}
                   />
-                  {isSafeMode ? "AI_SAFE_MODE_ENABLED" : "STREAM_LISTENER_ACTIVE"}
+                  {isSafeMode ? "AI Safe Mode Enabled" : "Stream Listener Active"}
                 </div>
                 <h2
-                  className="text-5xl md:text-7xl font-extrabold tracking-tighter mb-4 uppercase"
-                  style={{ fontFamily: "Manrope, sans-serif" }}
+                  className="text-5xl md:text-6xl font-extrabold tracking-[-0.03em] mb-4 leading-[1.05]"
+                  style={{ fontFamily: "Manrope, sans-serif", color: "#dff0f3" }}
                 >
                   Argus Intercept
                 </h2>
-                <p className="text-white/40 text-lg max-w-xl border-l border-cyan-400/30 pl-6" style={{ fontFamily: "Inter, sans-serif" }}>
-                  Autonomous privacy filtering for neural outbound streams. Neutralize data leaks before they reach the cloud.
+                <p className="text-lg max-w-xl pl-6 border-l border-[#99f7ff]/20" style={{ fontFamily: "Inter, sans-serif", color: "rgba(168,200,208,0.55)" }}>
+                  Autonomous privacy filtering for neural outbound streams. Neutralise data leaks before they reach the cloud.
                 </p>
               </div>
-              <div className="flex flex-col gap-2 text-right">
-                <span className="stream-label">ENCRYPTION_STATUS</span>
-                <span className="text-sm font-bold text-white tracking-widest" style={{ fontFamily: "Manrope, sans-serif" }}>
+              <div className="flex flex-col gap-1 text-right">
+                <span className="stream-label">Encryption Status</span>
+                <span className="text-sm font-bold tracking-widest" style={{ fontFamily: "Space Grotesk, sans-serif", color: "#99f7ff" }}>
                   TLS_OBSIDIAN_1.3
                 </span>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-1 mb-8 border border-white/10 rounded-2xl overflow-hidden terminal-window">
-              {/* Left: Raw Input */}
-              <div className="lg:col-span-6 flex flex-col bg-[#080808] border-r border-white/10">
-                <div className="px-6 py-4 flex justify-between items-center border-b border-white/5 bg-white/[0.02]">
-                  <span className="stream-label flex items-center gap-2">
-                    <span className="w-1 h-1 rounded-full bg-red-500 animate-pulse" />
-                    RAW_UNSECURED_STREAM
-                  </span>
-                  <span className="text-[9px] text-white/20 font-bold tracking-widest">PORT: 8080</span>
+            {/* Terminal panel — GlowCard wrapper for consistency */}
+            <GlowCard glowColor="lightblue" customSize className="w-full mb-8 overflow-hidden p-0">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 w-full">
+                {/* Left: Raw Input */}
+                <div className="lg:col-span-6 flex flex-col bg-white/[0.015] border-r border-white/[0.06]">
+                  <div className="px-6 py-4 flex justify-between items-center border-b border-white/[0.06] bg-white/[0.02]">
+                    <span className="stream-label flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
+                      Raw Unsecured Stream
+                    </span>
+                    <span className="text-[9px] text-white/20 font-bold tracking-widest" style={{ fontFamily: "Space Grotesk, sans-serif" }}>PORT: 8080</span>
+                  </div>
+                  <div className="p-8 flex-1">
+                    <textarea
+                      ref={inputRef}
+                      onInput={handleInput}
+                      className="w-full h-full min-h-[350px] bg-transparent border-none text-white font-mono text-sm leading-relaxed placeholder:text-white/10 resize-none focus:outline-none"
+                      placeholder="// Inject outbound data stream for interception..."
+                    />
+                  </div>
                 </div>
-                <div className="p-8 flex-1">
-                  <textarea
-                    ref={inputRef}
-                    onInput={handleInput}
-                    className="w-full h-full min-h-[350px] bg-transparent border-none text-white font-mono text-sm leading-relaxed placeholder:text-white/5 resize-none focus:outline-none"
-                    placeholder="// Inject outbound data stream for interception..."
-                  />
-                </div>
-              </div>
 
-              {/* Right: Processed Output */}
-              <div className="lg:col-span-6 flex flex-col bg-[#000000]">
-                <div className="px-6 py-4 flex justify-between items-center border-b border-white/5 bg-white/[0.01]">
-                  <span className="stream-label flex items-center gap-2">
-                    <span className="w-1 h-1 rounded-full bg-cyan-400" />
-                    SECURED_OBSIDIAN_STREAM
-                  </span>
-                  <span className="text-[9px] text-cyan-400/50 font-bold tracking-widest">ENCRYPTED</span>
-                </div>
-                <div className="p-8 flex-1 terminal-text">
-                  <div className="space-y-10">
-                    <div>
-                      <p className="stream-label mb-4">PII_DETECTION_ENGINE</p>
-                      <div className="p-6 rounded-lg bg-white/[0.02] border border-white/5">
-                        <p className="text-white text-base font-bold mb-4 tracking-tight">{detectionText}</p>
-                        <div className="space-y-4">
-                          <div className="flex justify-between items-center">
-                            <span className="text-[9px] font-black text-white/30 tracking-widest uppercase">{riskLabel}</span>
-                            <span className="text-[9px] font-black text-white/20 tracking-tighter uppercase">Threat Index</span>
-                          </div>
-                          <div className="risk-bar-container">
-                            <div
-                              className="risk-bar-fill h-full"
-                              style={{ width: riskWidth, background: riskColor }}
-                            />
+                {/* Right: Processed Output */}
+                <div className="lg:col-span-6 flex flex-col bg-white/[0.025]">
+                  <div className="px-6 py-4 flex justify-between items-center border-b border-white/[0.06] bg-white/[0.02]">
+                    <span className="stream-label flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#99f7ff]" />
+                      Secured Obsidian Stream
+                    </span>
+                    <span className="text-[9px] font-bold tracking-widest" style={{ fontFamily: "Space Grotesk, sans-serif", color: "rgba(153,247,255,0.5)" }}>ENCRYPTED</span>
+                  </div>
+                  <div className="p-8 flex-1 terminal-text">
+                    <div className="space-y-10">
+                      <div>
+                        <p className="stream-label mb-4">PII Detection Engine</p>
+                        <div className="p-6 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+                          <p className="text-white text-base font-bold mb-4 tracking-tight" style={{ fontFamily: "Manrope, sans-serif" }}>{detectionText}</p>
+                          <div className="space-y-4">
+                            <div className="flex justify-between items-center">
+                              <span className="text-[9px] font-black text-white/30 tracking-widest uppercase" style={{ fontFamily: "Space Grotesk, sans-serif" }}>{riskLabel}</span>
+                              <span className="text-[9px] font-black text-white/20 tracking-tighter uppercase" style={{ fontFamily: "Space Grotesk, sans-serif" }}>Threat Index</span>
+                            </div>
+                            <div className="risk-bar-container">
+                              <div className="risk-bar-fill h-full" style={{ width: riskWidth, background: riskColor }} />
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="space-y-8">
-                      <div>
-                        <p className="stream-label mb-3">MASKED_TRANSFORMATION</p>
-                        <p className="text-cyan-400/70 font-mono text-xs leading-relaxed italic border-l-2 border-white/10 pl-4 py-2 transition-all duration-300">
-                          {maskedOutput}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="stream-label mb-3">REFINED_SECURE_STREAM</p>
-                        <p
-                          className="text-white/80 font-mono text-xs leading-relaxed italic border-l-2 border-cyan-400/20 pl-4 py-2 cursor-pointer"
-                          onClick={handleCopy}
-                        >
-                          {copied ? "STREAM_COPIED_TO_BUFFER" : finalOutput}
-                        </p>
+                      <div className="space-y-8">
+                        <div>
+                          <p className="stream-label mb-3">Masked Transformation</p>
+                          <p className="font-mono text-xs leading-relaxed italic border-l-2 border-white/[0.08] pl-4 py-2 transition-all duration-300" style={{ color: "rgba(153,247,255,0.7)" }}>
+                            {maskedOutput}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="stream-label mb-3">Refined Secure Stream</p>
+                          <p
+                            className="text-white/80 font-mono text-xs leading-relaxed italic border-l-2 border-[#99f7ff]/20 pl-4 py-2 cursor-pointer hover:text-white transition-colors"
+                            onClick={handleCopy}
+                          >
+                            {copied ? "Stream copied to buffer ✓" : finalOutput}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </GlowCard>
 
             {/* Stats + Button */}
             <GlowCard glowColor="lightblue" customSize className="flex flex-col md:flex-row gap-8 items-center justify-between p-8 w-full">
