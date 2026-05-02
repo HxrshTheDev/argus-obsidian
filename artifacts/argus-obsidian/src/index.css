@@ -103,34 +103,108 @@ textarea:focus {
 }
 
 /* ============================================
-   Background Paths - Floating SVG Animation
+   Hero Background Animation System
+   GPU-composited only: transform + opacity
    ============================================ */
 
-@keyframes scanSweep {
-  0%   { top: -2px; opacity: 0; }
-  5%   { opacity: 1; }
-  95%  { opacity: 1; }
-  100% { top: 100%; opacity: 0; }
+/* Keyframes -------------------------------------------------- */
+
+@keyframes heroDriftX {
+  0%   { transform: translateX(-60px); opacity: 0; }
+  8%   { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { transform: translateX(60px);  opacity: 0; }
 }
 
-@keyframes floatingPath {
-  0% {
-    stroke-dashoffset: 2000;
-    opacity: 0.3;
-  }
-  50% {
-    opacity: 0.6;
-  }
-  100% {
-    stroke-dashoffset: -2000;
-    opacity: 0.3;
-  }
+@keyframes heroDriftY {
+  0%   { transform: translateY(-40px); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(40px);  opacity: 0; }
 }
 
-.floating-path {
-  stroke-dasharray: 800 1200;
-  will-change: stroke-dashoffset, opacity;
-  transform: translateZ(0);
+@keyframes heroPulse {
+  0%, 100% { opacity: 0.3; }
+  50%       { opacity: 1;   }
+}
+
+@keyframes heroGlowPulse {
+  0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1);    }
+  50%       { opacity: 1;   transform: translateX(-50%) scale(1.08); }
+}
+
+/* Container -------------------------------------------------- */
+
+.hero-bg-animation {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Central glow ----------------------------------------------- */
+
+.hero-glow-core {
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  width: min(900px, 120vw);
+  height: 560px;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(153, 247, 255, 0.08) 0%,
+    rgba(172, 137, 255, 0.05) 38%,
+    transparent 68%
+  );
+  will-change: transform, opacity;
+  animation: heroGlowPulse 12s ease-in-out infinite;
+}
+
+/* Horizontal drifting lines ---------------------------------- */
+
+.hero-line-h {
+  position: absolute;
+  height: 1px;
+  border-radius: 9999px;
+  will-change: transform, opacity;
+  animation: heroDriftX linear infinite;
+}
+
+/* Diagonal accent lines -------------------------------------- */
+
+.hero-line-d {
+  position: absolute;
+  width: 180px;
+  height: 1px;
+  border-radius: 9999px;
+  will-change: transform, opacity;
+  animation: heroPulse ease-in-out infinite;
+}
+
+/* Dot-grid overlay ------------------------------------------ */
+
+.hero-dot-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.018;
+  background-image:
+    radial-gradient(circle, rgba(153,247,255,0.9) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Reduce motion on low-end / mobile devices ------------------ */
+
+@media (max-width: 767px) {
+  .hero-line-d { display: none; }
+  .hero-glow-core { animation-duration: 20s; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-line-h,
+  .hero-line-d,
+  .hero-glow-core { animation: none !important; opacity: 0.5; }
 }
 
 /* ============================================
