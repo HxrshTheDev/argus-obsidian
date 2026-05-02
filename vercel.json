@@ -1,24 +1,14 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "artifacts/argus-obsidian/package.json",
-      "use": "@vercel/static-build",
-      "config": { "distDir": "dist/public" }
-    },
-    {
-      "src": "artifacts/api-server/src/app.ts",
-      "use": "@vercel/node"
-    }
-  ],
+  "outputDirectory": "artifacts/argus-obsidian/dist/public",
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "artifacts/api-server/src/app.ts"
+      "destination": "/api/index.ts"
     },
     {
       "source": "/(.*)",
-      "destination": "artifacts/argus-obsidian/$1"
+      "destination": "/$1"
     }
   ]
 }
