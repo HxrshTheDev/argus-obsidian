@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { HeroSection } from "@/components/ui/glass-video-hero";
+import { GlowCard } from "@/components/ui/glow-card";
 
 function generateFloatingPathsSVG(position: number): string {
   let paths = "";
@@ -227,6 +228,7 @@ export default function Home() {
                 icon: "radar",
                 title: "Detect",
                 color: "#99f7ff",
+                glowColor: "blue",
                 borderHover: "hover:border-[#99f7ff]/30",
                 text: "Real-time heuristic scanning identifies sensitive PII and trade secrets before they ever reach the Large Language Model.",
               },
@@ -234,6 +236,7 @@ export default function Home() {
                 icon: "visibility_off",
                 title: "Mask",
                 color: "#ac89ff",
+                glowColor: "purple",
                 borderHover: "hover:border-[#ac89ff]/30",
                 text: "Autonomous synthetic data replacement ensures LLM functionality remains intact while keeping your actual values hidden.",
               },
@@ -241,13 +244,16 @@ export default function Home() {
                 icon: "sync_alt",
                 title: "Restore",
                 color: "#00f1fe",
+                glowColor: "blue",
                 borderHover: "hover:border-[#00f1fe]/30",
                 text: "Seamless reverse-remapping decodes AI responses back to your local environment with absolute precision.",
               },
             ].map((card) => (
-              <div
+              <GlowCard
                 key={card.title}
-                className={`glass-card p-10 rounded-[24px] group ${card.borderHover} transition-all duration-500`}
+                glowColor={card.glowColor as 'blue' | 'purple' | 'green' | 'red' | 'orange'}
+                customSize
+                className="p-10 group transition-all duration-500 w-full"
               >
                 <div className="w-12 h-12 mb-8" style={{ color: card.color }}>
                   <span
@@ -257,13 +263,13 @@ export default function Home() {
                     {card.icon}
                   </span>
                 </div>
-                <h3 className="text-2xl font-bold mb-4" style={{ fontFamily: "Manrope, sans-serif" }}>
+                <h3 className="text-2xl font-bold mb-4 text-white" style={{ fontFamily: "Manrope, sans-serif" }}>
                   {card.title}
                 </h3>
                 <p className="text-[#adaaaa] leading-relaxed" style={{ fontFamily: "Inter, sans-serif" }}>
                   {card.text}
                 </p>
-              </div>
+              </GlowCard>
             ))}
           </div>
         </section>
