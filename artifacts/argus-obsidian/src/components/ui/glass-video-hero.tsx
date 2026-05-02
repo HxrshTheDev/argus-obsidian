@@ -52,7 +52,7 @@ const HeroSection = ({
       />
 
       {/* Hero content */}
-      <div className="relative z-10 flex flex-col items-center text-center mt-36 px-6 pb-24" style={{ opacity: 0.72 }}>
+      <div className="relative z-10 flex flex-col items-center text-center mt-36 px-6 pb-24">
 
         {/* Badge */}
         <div
