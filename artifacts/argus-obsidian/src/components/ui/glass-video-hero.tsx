@@ -36,9 +36,19 @@ const HeroSection = ({
         muted
         playsInline
         className="absolute inset-0 w-full h-full object-cover z-0"
+        style={{ filter: "hue-rotate(100deg) saturate(1.4) brightness(0.8)" }}
       >
         <source src={VIDEO_URL} type="video/mp4" />
       </video>
+
+      {/* Green light tint overlay */}
+      <div
+        className="absolute inset-0 z-[1] pointer-events-none"
+        style={{
+          background: "linear-gradient(135deg, rgba(0,60,20,0.45) 0%, rgba(10,80,40,0.3) 50%, rgba(0,40,15,0.45) 100%)",
+          mixBlendMode: "color",
+        }}
+      />
 
       {/* Hero content */}
       <div className="relative z-10 flex flex-col items-center text-center mt-36 px-6 pb-24">
