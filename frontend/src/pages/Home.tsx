@@ -106,6 +106,10 @@ export default function Home() {
   const [copied, setCopied] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const [showSettings, setShowSettings] = useState(false);
+  const [showKey, setShowKey] = useState(false);
+  const [nvidiaApiKey, setNvidiaApiKey] = useState(() => localStorage.getItem("nvidia_api_key") || "");
+
 
   const handleInput = useCallback(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -150,13 +154,27 @@ export default function Home() {
       setFinalOutput("FINALIZING_SECURE_OUTPUT...");
 
       const API_URL = "/api";
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (nvidiaApiKey.trim()) {
+        headers["x-nvidia-api-key"] = nvidiaApiKey.trim();
+      }
+
       const response = await fetch(`${API_URL}/process`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({ text }),
       });
 
-      if (!response.ok) throw new Error(`API_RESPONSE_FAIL: ${response.status}`);
+      if (!response.ok) {
+        let errMsg = `API_RESPONSE_FAIL: ${response.status}`;
+        try {
+          const errData = await response.json();
+          if (errData.error) {
+            errMsg = errData.error;
+          }
+        } catch (_) {}
+        throw new Error(errMsg);
+      }
 
       const data = await response.json();
       const resultText = data.improved || data.masked || text;
@@ -168,7 +186,7 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
-  }, [isSafeMode]);
+  }, [isSafeMode, nvidiaApiKey]);
 
   const handleCopy = useCallback(() => {
     if (!lastOutput) return;
@@ -280,21 +298,36 @@ export default function Home() {
             {/* Section header — matches Features/Trust pattern */}
             <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-8">
               <div>
-                {/* Status badge — same pill style as hero */}
-                <div
-                  className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg border mb-8 text-[10px] font-bold tracking-[0.25em] uppercase transition-all duration-400 ${
-                    isSafeMode
-                      ? "bg-emerald-400/10 text-emerald-400 border-emerald-400/20"
-                      : "bg-[#99f7ff]/10 text-[#99f7ff] border-[#99f7ff]/20"
-                  }`}
-                  style={{ fontFamily: "Space Grotesk, sans-serif" }}
-                >
-                  <span
-                    className={`w-1.5 h-1.5 rounded-full shadow-[0_0_8px_currentColor] ${
-                      isSafeMode ? "bg-emerald-400 animate-pulse" : "bg-[#99f7ff]"
+                {/* Status badges container */}
+                <div className="flex flex-wrap items-center gap-4 mb-8">
+                  <div
+                    className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg border text-[10px] font-bold tracking-[0.25em] uppercase transition-all duration-400 ${
+                      isSafeMode
+                        ? "bg-emerald-400/10 text-emerald-400 border-emerald-400/20"
+                        : "bg-[#99f7ff]/10 text-[#99f7ff] border-[#99f7ff]/20"
                     }`}
-                  />
-                  {isSafeMode ? "AI Safe Mode Enabled" : "Stream Listener Active"}
+                    style={{ fontFamily: "Space Grotesk, sans-serif" }}
+                  >
+                    <span
+                      className={`w-1.5 h-1.5 rounded-full shadow-[0_0_8px_currentColor] ${
+                        isSafeMode ? "bg-emerald-400 animate-pulse" : "bg-[#99f7ff]"
+                      }`}
+                    />
+                    {isSafeMode ? "AI Safe Mode Enabled" : "Stream Listener Active"}
+                  </div>
+
+                  <button
+                    onClick={() => setShowSettings(!showSettings)}
+                    className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg border text-[10px] font-bold tracking-[0.25em] uppercase transition-all duration-300 hover:scale-105 active:scale-95 ${
+                      showSettings
+                        ? "bg-cyan-400/15 text-cyan-400 border-cyan-400/30 shadow-[0_0_15px_rgba(34,211,238,0.15)]"
+                        : "bg-white/5 text-white/60 border-white/10 hover:text-white hover:border-white/20"
+                    }`}
+                    style={{ fontFamily: "Space Grotesk, sans-serif" }}
+                  >
+                    <span className="material-symbols-outlined text-xs">settings</span>
+                    NIM API CONFIG
+                  </button>
                 </div>
                 <h2
                   className="text-5xl md:text-6xl font-extrabold tracking-[-0.03em] mb-4 leading-[1.05]"
@@ -311,6 +344,57 @@ export default function Home() {
                 <span className="text-sm font-bold tracking-widest" style={{ fontFamily: "Space Grotesk, sans-serif", color: "#99f7ff" }}>
                   TLS_OBSIDIAN_1.3
                 </span>
+              </div>
+            </div>
+
+            {/* Beautiful, Glassmorphic Expandable settings panel */}
+            <div
+              className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                showSettings ? "max-h-[300px] opacity-100 mb-8" : "max-h-0 opacity-0 mb-0 pointer-events-none"
+              }`}
+            >
+              <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] backdrop-blur-[20px] shadow-[inset_0_1px_1px_rgba(255,255,255,0.05),0_10px_30px_rgba(0,0,0,0.5)]">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-full bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center text-cyan-400">
+                      <span className="material-symbols-outlined text-xl">key</span>
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-white uppercase tracking-wider" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
+                        NVIDIA NIM API Key
+                      </h4>
+                      <p className="text-[11px] text-[#adaaaa]" style={{ fontFamily: "Inter, sans-serif" }}>
+                        Configure your key to run prompts on <span className="text-cyan-400">llama-3.1-nemotron-70b-instruct</span> with automatic client-side PII protection.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex-1 max-w-md flex items-center gap-3">
+                    <div className="relative flex-1">
+                      <input
+                        type={showKey ? "text" : "password"}
+                        value={nvidiaApiKey}
+                        onChange={(e) => {
+                          setNvidiaApiKey(e.target.value);
+                          localStorage.setItem("nvidia_api_key", e.target.value);
+                        }}
+                        placeholder="Enter NVIDIA NIM API Key (nvapi-...)"
+                        className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl pl-4 pr-10 py-3 text-xs text-white font-mono placeholder:text-white/20 focus:outline-none focus:border-cyan-400/40 transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.2)]"
+                      />
+                      <button
+                        onClick={() => setShowKey(!showKey)}
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
+                      >
+                        <span className="material-symbols-outlined text-base">
+                          {showKey ? "visibility_off" : "visibility"}
+                        </span>
+                      </button>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-[10px] font-bold text-cyan-400/70 select-none uppercase tracking-wider whitespace-nowrap bg-cyan-400/5 px-3 py-2.5 rounded-xl border border-cyan-400/10" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
+                      <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                      {nvidiaApiKey ? "STORED" : "PENDING"}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 

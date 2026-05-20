@@ -7,22 +7,5 @@
       "@workspace/*": ["lib/*"]
     }
   },
-  "include": ["api/**/*", "lib/**/*", "frontend/**/*", "backend/**/*"],
-  "references": [
-    {
-      "path": "./lib/db"
-    },
-    {
-      "path": "./lib/api-client-react"
-    },
-    {
-      "path": "./lib/api-zod"
-    },
-    {
-      "path": "./frontend"
-    },
-    {
-      "path": "./backend"
-    }
-  ]
+  "include": ["api/**/*"],
 }
