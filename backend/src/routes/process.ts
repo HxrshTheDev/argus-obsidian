@@ -107,7 +107,7 @@ Constraint 2: Do NOT provide conversational preamble. Output a direct, seamless 
 Prompt:
 ${currentText}`;
 
-    const modelName = process.env.NVIDIA_MODEL || "nvidia/llama-3.1-nemotron-70b-instruct";
+    const modelName = process.env.NVIDIA_MODEL || "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning";
     
     const apiResponse: any = await fetch("https://integrate.api.nvidia.com/v1/chat/completions", {
       method: "POST",
@@ -118,9 +118,13 @@ ${currentText}`;
       body: JSON.stringify({
         model: modelName,
         messages: [{ role: "user", content: prompt }],
-        temperature: 0.7,
+        temperature: 0.6,
         top_p: 0.95,
-        max_tokens: 2048,
+        max_tokens: 4096,
+        extra_body: {
+          chat_template_kwargs: { enable_thinking: true },
+          reasoning_budget: 1024
+        }
       }),
     });
 

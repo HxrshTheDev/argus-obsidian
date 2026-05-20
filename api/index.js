@@ -138,14 +138,18 @@ app.post("/api/process", async (req, res) => {
     // --- Call Nvidia NIM ---
     const prompt = `Task: Provide a helpful, intelligent response to the following prompt.\nConstraint 1: You MUST PRESERVE all placeholders like [EMAIL_1], [PHONE_1], [API_KEY_1], etc. exactly format-wise.\nConstraint 2: Do NOT provide conversational preamble. Output a direct, seamless reply.\n\nPrompt:\n${currentText}`;
 
-    const modelName = process.env.NVIDIA_MODEL || "nvidia/llama-3.1-nemotron-70b-instruct";
+    const modelName = process.env.NVIDIA_MODEL || "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning";
 
     const requestBody = JSON.stringify({
       model: modelName,
       messages: [{ role: "user", content: prompt }],
-      temperature: 0.7,
+      temperature: 0.6,
       top_p: 0.95,
-      max_tokens: 2048,
+      max_tokens: 4096,
+      extra_body: {
+        chat_template_kwargs: { enable_thinking: true },
+        reasoning_budget: 1024
+      }
     });
 
     const headers = {

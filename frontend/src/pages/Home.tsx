@@ -364,7 +364,7 @@ export default function Home() {
                         NVIDIA NIM API Key
                       </h4>
                       <p className="text-[11px] text-[#adaaaa]" style={{ fontFamily: "Inter, sans-serif" }}>
-                        Configure your key to run prompts on <span className="text-cyan-400">llama-3.1-nemotron-70b-instruct</span> with automatic client-side PII protection.
+                        Configure your key to run prompts on <span className="text-cyan-400">nemotron-3-nano-omni-30b-a3b-reasoning</span> with automatic client-side PII protection.
                       </p>
                     </div>
                   </div>
