@@ -1,9 +1,6 @@
-/**
- * Vercel Serverless Function — fully self-contained.
- * No workspace imports so it works in Vercel's @vercel/node runtime.
- */
-import express from "express";
-import cors from "cors";
+const express = require("express");
+const cors = require("cors");
+const https = require("https");
 
 const app = express();
 app.use(cors());
@@ -11,7 +8,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // --------------- PII Detection Rules ---------------
-const RULES: { category: string; pattern: RegExp }[] = [
+const RULES = [
   { category: "API_KEY", pattern: /\b[A-Za-z0-9_-]{20,}\b|\bsk-[A-Za-z0-9]{20,}\b|\bpk_[A-Za-z0-9]{20,}\b|\b(?:api[-]?key|token|secret)\s*[:=]\s*[A-Za-z0-9-]{10,}\b/gi },
   { category: "TOKEN", pattern: /\bBearer\s+[A-Za-z0-9-._~+/]+=*\b/gi },
   { category: "PASSWORD", pattern: /\b(?:password|pwd|pass)\s*[:=]\s*\S+\b/gi },
@@ -24,21 +21,57 @@ const RULES: { category: string; pattern: RegExp }[] = [
   { category: "NAME", pattern: /\b[A-Z][a-z]+\s[A-Z][a-z]+\b/g },
 ];
 
-interface MatchEntry {
-  category: string;
-  value: string;
-  start: number;
-  end: number;
-  index: number;
+// --------------- HTTPS Request Helper ---------------
+function makeRequest(url, headers, bodyData) {
+  return new Promise((resolve, reject) => {
+    const parsedUrl = new URL(url);
+    const options = {
+      hostname: parsedUrl.hostname,
+      path: parsedUrl.pathname + parsedUrl.search,
+      method: "POST",
+      headers: headers,
+    };
+
+    const req = https.request(options, (res) => {
+      let data = "";
+      res.on("data", (chunk) => {
+        data += chunk;
+      });
+      res.on("end", () => {
+        resolve({
+          ok: res.statusCode >= 200 && res.statusCode < 300,
+          status: res.statusCode,
+          statusText: res.statusMessage,
+          text: () => Promise.resolve(data),
+          json: () => {
+            try {
+              return Promise.resolve(JSON.parse(data));
+            } catch (e) {
+              return Promise.reject(new Error("Invalid JSON returned: " + data));
+            }
+          }
+        });
+      });
+    });
+
+    req.on("error", (e) => {
+      reject(e);
+    });
+
+    if (bodyData) {
+      req.write(bodyData);
+    }
+    req.end();
+  });
 }
 
 // --------------- Health ---------------
-app.get("/api/healthz", (_req: any, res: any) => {
+app.get("/api/healthz", (req, res) => {
   res.json({ status: "ok" });
 });
 
 // --------------- Process GET ---------------
-app.get("/api/process", (_req: any, res: any) => {
+app.get("/api/process", (req, res) => {
   res.json({
     status: "ok",
     message: "Argus Obsidian /api/process endpoint is live. Send a POST request with { \"text\": \"...\" } to use it.",
@@ -46,7 +79,7 @@ app.get("/api/process", (_req: any, res: any) => {
 });
 
 // --------------- Process POST ---------------
-app.post("/api/process", async (req: any, res: any) => {
+app.post("/api/process", async (req, res) => {
   try {
     const text = (req.body?.text ?? "").trim();
     if (!text) {
@@ -55,12 +88,12 @@ app.post("/api/process", async (req: any, res: any) => {
     }
 
     // --- PII masking ---
-    const matches: MatchEntry[] = [];
-    const ranges: { start: number; end: number }[] = [];
+    const matches = [];
+    const ranges = [];
 
     for (const rule of RULES) {
       rule.pattern.lastIndex = 0;
-      let match: RegExpExecArray | null;
+      let match;
       while ((match = rule.pattern.exec(text)) !== null) {
         const start = match.index;
         const end = start + match[0].length;
@@ -78,7 +111,7 @@ app.post("/api/process", async (req: any, res: any) => {
     }
 
     matches.sort((a, b) => a.start - b.start);
-    const typeCounters: Record<string, number> = {};
+    const typeCounters = {};
     for (const m of matches) {
       typeCounters[m.category] = (typeCounters[m.category] || 0) + 1;
       m.index = typeCounters[m.category];
@@ -103,29 +136,25 @@ app.post("/api/process", async (req: any, res: any) => {
     }
 
     // --- Call Nvidia NIM ---
-    const prompt = `Task: Provide a helpful, intelligent response to the following prompt.
-Constraint 1: You MUST PRESERVE all placeholders like [EMAIL_1], [PHONE_1], [API_KEY_1], etc. exactly format-wise.
-Constraint 2: Do NOT provide conversational preamble. Output a direct, seamless reply.
-
-Prompt:
-${currentText}`;
+    const prompt = `Task: Provide a helpful, intelligent response to the following prompt.\nConstraint 1: You MUST PRESERVE all placeholders like [EMAIL_1], [PHONE_1], [API_KEY_1], etc. exactly format-wise.\nConstraint 2: Do NOT provide conversational preamble. Output a direct, seamless reply.\n\nPrompt:\n${currentText}`;
 
     const modelName = process.env.NVIDIA_MODEL || "nvidia/llama-3.1-nemotron-70b-instruct";
 
-    const apiResponse: any = await fetch("https://integrate.api.nvidia.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${nvidiaApiKey}`,
-      },
-      body: JSON.stringify({
-        model: modelName,
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0.7,
-        top_p: 0.95,
-        max_tokens: 2048,
-      }),
+    const requestBody = JSON.stringify({
+      model: modelName,
+      messages: [{ role: "user", content: prompt }],
+      temperature: 0.7,
+      top_p: 0.95,
+      max_tokens: 2048,
     });
+
+    const headers = {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${nvidiaApiKey}`,
+      "Content-Length": Buffer.byteLength(requestBody)
+    };
+
+    const apiResponse = await makeRequest("https://integrate.api.nvidia.com/v1/chat/completions", headers, requestBody);
 
     if (!apiResponse.ok) {
       const errText = await apiResponse.text();
@@ -140,12 +169,12 @@ ${currentText}`;
       throw new Error(errorMsg);
     }
 
-    const resData: any = await apiResponse.json();
+    const resData = await apiResponse.json();
     const aiText = resData.choices?.[0]?.message?.content || "";
 
     // --- Reverse Remapping ---
     let restoredText = aiText;
-    const placeholderMap: Record<string, string> = {};
+    const placeholderMap = {};
     for (const m of matches) {
       placeholderMap[`[${m.category}_${m.index}]`] = m.value;
     }
@@ -158,11 +187,11 @@ ${currentText}`;
       count: matches.length,
       improved: restoredText,
     });
-  } catch (error: any) {
+  } catch (error) {
     res.status(500).json({
       error: error.message || "An unexpected error occurred during AI processing.",
     });
   }
 });
 
-export default app;
+module.exports = app;
