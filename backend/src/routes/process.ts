@@ -26,6 +26,14 @@ interface MatchEntry {
   index: number;
 }
 
+// GET handler — helpful message for browser visitors
+router.get("/process", (_req: any, res: any) => {
+  res.json({
+    status: "ok",
+    message: "Argus Obsidian /api/process endpoint is live. Send a POST request with { \"text\": \"...\" } to use it.",
+  });
+});
+
 router.post("/process", async (req: any, res: any) => {
   try {
     const parsed = InputSchema.safeParse(req.body);
