@@ -109,7 +109,7 @@ ${currentText}`;
 
     const modelName = process.env.NVIDIA_MODEL || "nvidia/llama-3.1-nemotron-70b-instruct";
     
-    const apiResponse = await fetch("https://integrate.api.nvidia.com/v1/chat/completions", {
+    const apiResponse: any = await fetch("https://integrate.api.nvidia.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
